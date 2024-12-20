@@ -1,0 +1,120 @@
+/* General Styles */
+* {
+  font-size: large;
+  /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.container {
+  padding: 2rem;
+}
+
+/* User Information Section */
+.user-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f9f9f9;
+}
+
+.photo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.photo {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border: 2px solid #ccc;
+  background-color: #eaeaea;
+  overflow: hidden; /* Ensures the image doesn't spill out of the container */
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image scales properly within the circle */
+}
+
+.name p {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.weight-age {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+/* Trainer Section */
+.trainer-container {
+  text-align: center;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+/* Workout Container */
+.workout-container {
+  margin-top: 2rem;
+}
+
+.workout-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Weekly Plan Section */
+.weekly-plan {
+  border: 2px solid #ddd;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #f3f3f3;
+}
+
+.week {
+  text-align: center;
+}
+
+.week-day {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.icon {
+  border-radius: 50%;
+  width: 50px; /* Adjust size as needed */
+  height: 50px;
+  border: 2px solid #ccc;
+  background-color: #eaeaea;
+  overflow: hidden; /* Ensures the image is cropped within the circle */
+}
+
+.icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Scales the image while maintaining its aspect ratio */
+}
