@@ -13,6 +13,10 @@ const ExAccount = lazy(() => import("../views/Accounts/Account.js"));
 
 const WorkoutPlan = lazy(() => import("../views/WorkoutPlan/WorkoutPlan.js"));
 
+const PaymentPage = lazy(() => import("../views/Payment/PaymentPage.js"));
+
+const SaveCardInfoPage = lazy(() => import("../views/Payment/SaveCardInfoPage.js"));
+
 
 /*****Tables******/
 const BasicTable = lazy(() => import("../views/tables/BasicTable.js"));
@@ -50,6 +54,8 @@ const ThemeRoutes = [
       { path: "/accounts/account", element: <ExAccount /> },
       { path: "/accounts/accountProfile", element: <Account /> },
       { path: "/workout/workoutplan", element: <WorkoutPlan /> },
+      { path: "/payment/pay", element: <PaymentPage /> },
+      { path: "/save-card-info", element: <SaveCardInfoPage /> },
 
 
 

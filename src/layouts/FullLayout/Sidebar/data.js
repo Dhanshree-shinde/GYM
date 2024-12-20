@@ -70,6 +70,12 @@ const Menuitems = [
     icon: AutoAwesomeMosaicOutlinedIcon,
     href: "/workout/workoutplan",
   },
+
+  {
+      title: "Payment",
+      icon: SwitchLeftOutlinedIcon,
+      href: "/payement/pay",
+    },
 ];
 
 export default Menuitems;
