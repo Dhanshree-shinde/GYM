@@ -15,7 +15,7 @@ const Dashboard1 = () => {
 
   return (
     <Box>
-      <Grid container spacing={0}>
+      {/* <Grid container spacing={0}>
         {/* ------------------------- row 1 ------------------------- */}
         <Grid item xs={12} lg={12}>
           <SalesOverview />
@@ -29,7 +29,7 @@ const Dashboard1 = () => {
         </Grid>
         {/* ------------------------- row 3 ------------------------- */}
         <BlogCard />
-      </Grid>
+      </Grid> */}
       <Grid item xs={12} lg={12}>
         <WeightChart />
       </Grid>

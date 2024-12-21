@@ -214,45 +214,109 @@ export default WorkoutPlan;
 
 
 
-// import React from 'react';
-// import '../../css/workout.css';
 
-// function WorkoutPlan() {
+// import React from "react";
+// import { Box, Avatar, Typography } from "@mui/material";
+
+// const WorkoutPlan = () => {
+//   const workoutIcons = {
+//     M: { name: "Upper Body", src: "/images/u4.jpg" },
+//     T: { name: "Back", src: "/images/u4.jpg" },
+//     W: { name: "Cardio", src: "/images/u4.jpg" },
+//     T2: { name: "Rest", src: "/images/u4.jpg" },
+//     F: { name: "Shoulder", src: "/images/u4.jpg" },
+//     S: { name: "Legs", src: "/images/u4.jpg" },
+//     S2: { name: "Rest", src: "/images/u4.jpg" },
+//   };
+//   const UserName = "Dhanshree";
+//   const weight = 48;
+//   const Age = 21;
+
+//   const days = ["M", "T", "W", "T2", "F", "S", "S2"];
+//   const trainer = "Dhanshree Shinde";
+
 //   return (
-//     <div className='container'>
-//       <div className='user-info'>
-//         <div className='photo-container'>
-//           <div className='photo'></div>
-//         </div>
-//         <div className='name'>
-//           <p>Name</p>
-//         </div>
-//         <div className='weight-age'>
-//           <p>Age - </p>
-//           <p>Weight - </p>
-//         </div>
-//       </div>
+//     <Box className="container" sx={{ padding: "20px", fontFamily: "Arial" }}>
+//       {/* User Info Section */}
+//       <Box className="user-info" sx={{ display: "flex", marginBottom: "20px" }}>
+//         <Box className="photo-container" sx={{ marginRight: "20px" }}>
+//           <Avatar
+//             src="/images/u4.jpg"
+//             alt="User"
+//             sx={{ width: 100, height: 100 }}
+//           />
+//         </Box>
+//         <Box>
+//           <Typography className="name" sx={{ fontSize: "20px", fontWeight: "bold" }}>
+//             {UserName}
+//           </Typography>
+//           <Box className="weight-age" sx={{ marginTop: "10px" }}>
+//             <Typography sx={{ fontSize: "16px" }}>Age - {Age}</Typography>
+//             <Typography sx={{ fontSize: "16px" }}>Weight - {weight}</Typography>
+//           </Box>
+//         </Box>
+//       </Box>
 
-//       <div className='trainer-container'>
-//         <span>Trainer name - Dhanshree Shinde</span>
-//       </div>
+//       {/* Trainer Section */}
+//       <Box className="trainer-container" sx={{ marginBottom: "20px" }}>
+//         <Typography sx={{ fontSize: "18px", fontWeight: "bold" }}>
+//           Trainer Name - {trainer}
+//         </Typography>
+//       </Box>
 
-//       <div className='workout-container'>
-//         <h2>Workout Plan</h2>
-//         <div className='weekly-plan'>
-//           {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
-//             <div className='week' key={index}>
-//               <div className='week-day'>{day}</div>
-//               <div className='icon'></div>
-//             </div>
+//       {/* Workout Plan Section */}
+//       <Box className="workout-container">
+//         <Typography
+//           variant="h5"
+//           className="workout-title"
+//           sx={{ marginBottom: "20px", fontWeight: "bold" }}
+//         >
+//           Workout Plan
+//         </Typography>
+//         <Box
+//           className="weekly-plan"
+//           sx={{
+//             display: "grid",
+//             gridTemplateColumns: "repeat(7, 1fr)",
+//             gap: "10px",
+//           }}
+//         >
+//           {days.map((day, index) => (
+//             <Box
+//               className="week"
+//               key={index}
+//               sx={{
+//                 textAlign: "center",
+//                 padding: "10px",
+//                 border: "1px solid #ccc",
+//                 borderRadius: "8px",
+//               }}
+//             >
+//               <Typography
+//                 className="week-day"
+//                 sx={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px" }}
+//               >
+//                 {day.charAt(0)}
+//               </Typography>
+//               <Avatar
+//                 className="icon"
+//                 src={workoutIcons[day].src}
+//                 alt={`${workoutIcons[day].name} icon`}
+//                 sx={{ width: 60, height: 60, margin: "0 auto" }}
+//               />
+//               <Typography
+//                 variant="caption"
+//                 className="icon-label"
+//                 sx={{ marginTop: "10px", display: "block" }}
+//               >
+//                 {workoutIcons[day].name}
+//               </Typography>
+//             </Box>
 //           ))}
-//         </div>
-//       </div>
-//     </div>
+//         </Box>
+//       </Box>
+//     </Box>
 //   );
-// }
+// };
 
 // export default WorkoutPlan;
-
-
-

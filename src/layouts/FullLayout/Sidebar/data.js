@@ -74,7 +74,7 @@ const Menuitems = [
   {
       title: "Payment",
       icon: SwitchLeftOutlinedIcon,
-      href: "/payement/pay",
+      href: "/payment/pay",
     },
 ];
 
