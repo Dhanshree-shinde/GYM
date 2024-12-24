@@ -11,6 +11,7 @@ const SignUp = () => {
   const [photo, setPhoto] = useState("");
   const [gender, setGender] = useState("");
   const [role, setRole] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");  // Added for date input
 
   const styles = {
     container: {
@@ -73,18 +74,35 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!email || !password || !name || !phone || !gender || !role) {
+    if (!email || !password || !name || !phone || !gender || !role || !dateOfBirth) {
       setErrorMessage("Please fill out all required fields.");
       return;
     }
 
+    // Format the date from dd-mm-yyyy to yyyy-mm-dd
+    const formattedDate = dateOfBirth
+      .split('-')
+      .reverse()
+      .join('-');
+
     // Example API call (replace with actual endpoint)
-    fetch("http://localhost:3000/signup", {
+    fetch("http://localhost:3001/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, phone, email, password, weight, height, photo, gender, role }),
+      body: JSON.stringify({
+        name,
+        phone,
+        email,
+        password,
+        weight,
+        height,
+        photo,
+        gender,
+        role,
+        dateOfBirth: formattedDate,
+      }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -115,7 +133,7 @@ const SignUp = () => {
           required
         />
         <input
-          type="tel"
+          type="number"
           placeholder="Phone Number*"
           style={styles.input}
           value={phone}
@@ -159,7 +177,14 @@ const SignUp = () => {
           value={photo}
           onChange={(e) => setPhoto(e.target.value)}
         />
-        <input type="date" style={styles.input} required />
+        <input
+          type="text"
+          placeholder="Date of Birth (dd-mm-yyyy)*"
+          style={styles.input}
+          value={dateOfBirth}
+          onChange={(e) => setDateOfBirth(e.target.value)}
+          required
+        />
         <select
           style={styles.select}
           value={gender}
@@ -189,7 +214,6 @@ const SignUp = () => {
           Sign Up
         </button>
       </form>
-      
     </div>
   );
 };
