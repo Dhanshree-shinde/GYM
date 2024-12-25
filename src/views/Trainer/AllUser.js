@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import {
   Typography,
   Box,
@@ -7,31 +7,66 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Chip,
   TextField,
+  Button,
+  CircularProgress,
 } from "@mui/material";
 import axios from "axios";
 
 const AllUser = () => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [assignedClients, setAssignedClients] = useState(new Set()); // Tracks assigned clients
 
-  // Fetch user data from the backend
+  // Fetch user data and assigned clients from the backend
   useEffect(() => {
+    // Fetch users from backend
     axios
-      .get("http://localhost:5000/users")
+      .get("http://localhost:3001/users")
       .then((response) => {
         setUsers(response.data);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
+
+    // Fetch assigned clients from localStorage or backend
+    const assignedFromLocalStorage = JSON.parse(localStorage.getItem("assignedClients")) || [];
+    const assigned = new Set(assignedFromLocalStorage);
+    setAssignedClients(assigned);
   }, []);
 
   // Filter users based on search
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  // Handle the add client action
+  const handleAddClient = (userId) => {
+    setLoading(true);
+    const trainerId = 16; // Hardcoding the trainer ID as 16 (for trainer with id = 16)
+
+    axios
+      .post("http://localhost:3001/assign-client", { trainerId, clientId: userId })
+      .then((response) => {
+        alert(response.data.message); // Show success message
+        
+        // Update assigned clients state
+        setAssignedClients((prev) => {
+          const updated = new Set(prev).add(userId);
+          localStorage.setItem("assignedClients", JSON.stringify(Array.from(updated))); // Persist in localStorage
+          return updated;
+        });
+        
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error assigning client:", error);
+        setLoading(false);
+        alert("Error adding client");
+      });
+  };
 
   return (
     <Box>
@@ -53,61 +88,60 @@ const AllUser = () => {
           <TableRow>
             <TableCell>
               <Typography color="textSecondary" variant="h6">
-                Id
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography color="textSecondary" variant="h6">
                 Name
               </Typography>
             </TableCell>
-            {/* <TableCell>
+            <TableCell>
               <Typography color="textSecondary" variant="h6">
-                Post
+                Email
               </Typography>
             </TableCell>
             <TableCell>
               <Typography color="textSecondary" variant="h6">
-                Project Name
+                Phone number
               </Typography>
             </TableCell>
             <TableCell>
               <Typography color="textSecondary" variant="h6">
-                Priority
+                Action
               </Typography>
             </TableCell>
-            <TableCell align="right">
-              <Typography color="textSecondary" variant="h6">
-                Budget
-              </Typography>
-            </TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {filteredUsers.map((user) => (
             <TableRow key={user.id}>
-              <TableCell>{user.id}</TableCell>
               <TableCell>{user.name}</TableCell>
-              {/* <TableCell>{user.post}</TableCell>
-              <TableCell>{user.pname}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.phone_number}</TableCell>
               <TableCell>
-                <Chip
-                  label={user.priority}
-                  size="small"
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  onClick={() => handleAddClient(user.id)}
+                  disabled={loading || assignedClients.has(user.id)} // Disable button if already assigned
                   sx={{
-                    backgroundColor:
-                      user.priority === "Low"
-                        ? "primary.main"
-                        : user.priority === "Medium"
-                        ? "secondary.main"
-                        : user.priority === "High"
-                        ? "error.main"
-                        : "success.main",
-                    color: "#fff",
+                    backgroundColor: loading ? "gray" : assignedClients.has(user.id) ? "lightgray" : "#1976d2",
+                    "&:hover": {
+                      backgroundColor: loading
+                        ? "gray"
+                        : assignedClients.has(user.id)
+                        ? "lightgray"
+                        : "#1565c0",
+                    },
+                    transition: "background-color 0.3s",
                   }}
-                />
-              </TableCell> */}
-              {/* <TableCell align="right">${user.budget}k</TableCell> */}
+                >
+                  {loading && !assignedClients.has(user.id) ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : assignedClients.has(user.id) ? (
+                    "Already Assigned"
+                  ) : (
+                    "Add as Client"
+                  )}
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

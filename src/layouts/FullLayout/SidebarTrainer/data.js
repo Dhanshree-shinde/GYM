@@ -12,70 +12,25 @@ const Menuitems = [
   {
     title: "All user",
     icon: DashboardOutlinedIcon,
-    href: "/trainer/users",
+    href: "/trainer/all-users",
   },
-  // {
-  //   title: "Autocomplete",
-  //   icon: AddToPhotosOutlinedIcon,
-  //   href: "/form-elements/autocomplete",
-  // },
-  // {
-  //   title: "Buttons",
-  //   icon: AspectRatioOutlinedIcon,
-  //   href: "/form-elements/button",
-  // },
-  // {
-  //   title: "Checkbox",
-  //   icon: AssignmentTurnedInOutlinedIcon,
-  //   href: "/form-elements/checkbox",
-  // },
-  // {
-  //   title: "Radio",
-  //   icon: AlbumOutlinedIcon,
-  //   href: "/form-elements/radio",
-  // },
-  // {
-  //   title: "Slider",
-  //   icon: SwitchCameraOutlinedIcon,
-  //   href: "/form-elements/slider",
-  // },
-  // {
-  //   title: "Switch",
-  //   icon: SwitchLeftOutlinedIcon,
-  //   href: "/form-elements/switch",
-  // },
-  // {
-  //   title: "Form",
-  //   icon: DescriptionOutlinedIcon,
-  //   href: "/form-layouts/form-layouts",
-  // },
-  // {
-  //   title: "Table",
-  //   icon: AutoAwesomeMosaicOutlinedIcon,
-  //   href: "/tables/basic-table",
-  // },
-  // {
-  //   title: "Account",
-  //   icon: DescriptionOutlinedIcon,
-  //   href: "/accounts/account",
-  // },
 
-  // {
-  //   title: "Account",
-  //   icon: DescriptionOutlinedIcon,
-  //   href: "/accounts/accountProfile",
-  // },
-  // {
-  //   title: "WorkoutPlan",
-  //   icon: AutoAwesomeMosaicOutlinedIcon,
-  //   href: "/workout/workoutplan",
-  // },
-
-  // {
-  //     title: "Payment",
-  //     icon: SwitchLeftOutlinedIcon,
-  //     href: "/payment/pay",
-  //   },
+  {
+    title: "Assigned Clients",
+    icon: DashboardOutlinedIcon,
+    href: "/trainer/assigned-users",
+  },
+  {
+    title: "Assign WorkoutPlan",
+    icon: DashboardOutlinedIcon,
+    href: "/trainer/assign-workout-plan",
+  },
+  {
+    title: "User Details",
+    icon: DashboardOutlinedIcon,
+    href: "/trainer/user-information/:clientId",
+  },
+ 
 ];
 
 export default Menuitems;
