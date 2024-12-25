@@ -49,29 +49,27 @@
 
 // export default UserDetailPage;
 
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './UserDetailPage.css'; // Import external CSS file
+import './UserDetailPage.css'; // External CSS for styling
 
-function UserDetailPage() {
-  const { clientId } = useParams(); // Extract clientId from URL
+function UserDetailPage({ clientId }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Fetch user data from the database using clientId
     axios
       .get(`http://localhost:3001/single-user-detail/${clientId}`)
       .then((response) => {
-        setUser(response.data); // Update user state with fetched data
+        setUser(response.data);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-  }, [clientId]); // Dependency array ensures this effect runs when clientId changes
+  }, [clientId]); // This effect runs whenever clientId changes
 
   if (!user) {
-    // While user data is being fetched, show a loading message
     return (
       <div className="loading">
         <h2>Loading...</h2>
@@ -83,7 +81,6 @@ function UserDetailPage() {
     <div className="user-detail-container">
       <h1 className="user-detail-heading">User Details</h1>
       <div className="user-detail-card">
-        {/* <img src={user.photo_url} alt={user.name} className="user-photo" /> */}
         <div className="user-detail-item">
           <strong>Name:</strong> {user.name}
         </div>

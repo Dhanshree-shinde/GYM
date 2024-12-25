@@ -149,10 +149,39 @@
 // };
 
 // export default WorkoutPlan;
-import React from 'react';
+
+import React,{useState,useEffect} from 'react';
 import '../../css/workout.css';
+import axios from'axios';
+
 
 function WorkoutPlan() {
+  
+  const clientId=3;
+  const[user,setUser]=useState("");
+  const[trainer,setTrainer]=useState("");
+  // clientId=1;
+  
+  useEffect(()=>{
+
+    const fetchData = async () => {
+      try {
+        const [userResponse, trainerResponse] = await Promise.all([
+          axios.get(`http://localhost:3001/single-user-detail/${clientId}`),        
+          axios.get(`http://localhost:3001/get-trainer-name/${clientId}`)
+        ]);
+  
+        setUser(userResponse.data);
+        setTrainer(trainerResponse.data);
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+  }, [clientId]);
+
   const workoutIcons = {
     M: { name: 'Upper Body', src: '/images/u4.jpg' },
     T: { name: 'Back', src: '/images/u4.jpg' },
@@ -162,12 +191,25 @@ function WorkoutPlan() {
     S: { name: 'Legs', src: '/images/u4.jpg' },
     S2: { name: 'Rest', src: '/images/u4.jpg' },
   };
-  const UserName='Dhanshree'
-  const weight=48;
-  const Age=21;
+
+  var dob = new Date(user.date_of_birth);  
+
+    //calculate month difference from current date in time  
+    var month_diff = Date.now() - dob.getTime();  
+      
+    //convert the calculated difference in date format  
+    var age_dt = new Date(month_diff);   
+      
+    //extract year from date      
+    var year = age_dt.getUTCFullYear();  
+      
+    //now calculate the age of the user  
+    const age = Math.abs(year - 1970);  
+      
+  
 
   const days = ['M', 'T', 'W', 'T2', 'F', 'S', 'S2'];
-  const trainer = 'Dhanshree Shinde';
+  // const trainer = 'Dhanshree Shinde';
 
   return (
     <div className='container'>
@@ -178,16 +220,16 @@ function WorkoutPlan() {
           </div>
         </div>
         <div className='name'>
-          <p>{UserName}</p>
+          <p>{user.name}</p>
         </div>
         <div className='weight-age'>
-          <p>Age - {Age} </p>
-          <p>Weight - {weight} </p>
+          <p>Age - {age} </p>
+          <p>Weight - {user.weight} </p>
         </div>
       </div>
 
       <div className='trainer-container'>
-        <span>Trainer name - {trainer}</span>
+        <span>Trainer name - {trainer.name}</span>
       </div>
 
       <div className='workout-container'>
