@@ -9,7 +9,7 @@ import TrainerRoutes from "./routes/RouterTrainer";
 const App = () => {
   const routing = useRoutes(Themeroutes);
   const trainerRouting = useRoutes(TrainerRoutes);
-  const role = "trainer";
+  const role = "client";
 
   const theme = baseTheme;
   return (

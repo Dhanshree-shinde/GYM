@@ -25,21 +25,6 @@ const SignUp = lazy(() => import("../components/Auth/SignUp.js"));
 const SignIn = lazy(() => import("../components/Auth/SignIn.js"));
 
 
-/*****Tables******/
-const BasicTable = lazy(() => import("../views/tables/BasicTable.js"));
-
-// form elements
-const ExAutoComplete = lazy(() =>
-  import("../views/FormElements/ExAutoComplete.js")
-);
-const ExButton = lazy(() => import("../views/FormElements/ExButton.js"));
-const ExCheckbox = lazy(() => import("../views/FormElements/ExCheckbox.js"));
-const ExRadio = lazy(() => import("../views/FormElements/ExRadio.js"));
-const ExSlider = lazy(() => import("../views/FormElements/ExSlider.js"));
-const ExSwitch = lazy(() => import("../views/FormElements/ExSwitch.js"));
-
-// form layouts
-const FormLayouts = lazy(() => import("../views/FormLayouts/FormLayouts.js"));
 
 /*****Routes******/
 
@@ -50,14 +35,6 @@ const ThemeRoutes = [
     children: [
       { path: "/", element: <Navigate to="dashboards/dashboard1" /> },
       { path: "dashboards/dashboard1", exact: true, element: <Dashboard1 /> },
-      // { path: "tables/basic-table", element: <BasicTable /> },
-      // { path: "/form-layouts/form-layouts", element: <FormLayouts /> },
-      // { path: "/form-elements/autocomplete", element: <ExAutoComplete /> },
-      // { path: "/form-elements/button", element: <ExButton /> },
-      // { path: "/form-elements/checkbox", element: <ExCheckbox /> },
-      // { path: "/form-elements/radio", element: <ExRadio /> },
-      // { path: "/form-elements/slider", element: <ExSlider /> },
-      // { path: "/form-elements/switch", element: <ExSwitch /> },
       { path: "/accounts/account", element: <ExAccount /> },
       { path: "/accounts/accountProfile", element: <Account /> },
       { path: "/workout/workoutplan", element: <WorkoutPlan /> },

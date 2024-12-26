@@ -150,35 +150,60 @@
 
 // export default WorkoutPlan;
 
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/workout.css';
-import axios from'axios';
+import {
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+
+} from "@mui/material";
+
+import axios from 'axios';
 
 
 function WorkoutPlan() {
-  
-  const clientId=3;
-  const[user,setUser]=useState("");
-  const[trainer,setTrainer]=useState("");
+
+  const clientId = 1;
+  const [user, setUser] = useState("");
+  const [trainer, setTrainer] = useState("");
+
+  const [workout, setWorkout] = useState({
+    monday: { title: "", description: "" },
+    tuesday: { title: "", description: "" },
+    wednesday: { title: "", description: "" },
+    thursday: { title: "", description: "" },
+    friday: { title: "", description: "" },
+    saturday: { title: "", description: "" },
+    sunday: { title: "", description: "" },
+  });
+
   // clientId=1;
-  
-  useEffect(()=>{
+
+  useEffect(() => {
 
     const fetchData = async () => {
       try {
-        const [userResponse, trainerResponse] = await Promise.all([
-          axios.get(`http://localhost:3001/single-user-detail/${clientId}`),        
-          axios.get(`http://localhost:3001/get-trainer-name/${clientId}`)
+        const [userResponse, trainerResponse, workoutResponse] = await Promise.all([
+          axios.get(`http://localhost:3001/single-user-detail/${clientId}`),
+          axios.get(`http://localhost:3001/get-trainer-name/${clientId}`),
+          axios.get(`http://localhost:3001/get-workout-plan/${clientId}`)
+
         ]);
-  
+
         setUser(userResponse.data);
         setTrainer(trainerResponse.data);
+        setWorkout(workoutResponse.data)
 
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [clientId]);
 
@@ -192,21 +217,21 @@ function WorkoutPlan() {
     S2: { name: 'Rest', src: '/images/u4.jpg' },
   };
 
-  var dob = new Date(user.date_of_birth);  
+  var dob = new Date(user.date_of_birth);
 
-    //calculate month difference from current date in time  
-    var month_diff = Date.now() - dob.getTime();  
-      
-    //convert the calculated difference in date format  
-    var age_dt = new Date(month_diff);   
-      
-    //extract year from date      
-    var year = age_dt.getUTCFullYear();  
-      
-    //now calculate the age of the user  
-    const age = Math.abs(year - 1970);  
-      
-  
+  //calculate month difference from current date in time  
+  var month_diff = Date.now() - dob.getTime();
+
+  //convert the calculated difference in date format  
+  var age_dt = new Date(month_diff);
+
+  //extract year from date      
+  var year = age_dt.getUTCFullYear();
+
+  //now calculate the age of the user  
+  const age = Math.abs(year - 1970);
+
+
 
   const days = ['M', 'T', 'W', 'T2', 'F', 'S', 'S2'];
   // const trainer = 'Dhanshree Shinde';
@@ -229,12 +254,57 @@ function WorkoutPlan() {
       </div>
 
       <div className='trainer-container'>
-        <span>Trainer name - {trainer.name}</span>
+       <span className='trainer'> Trainer Name : {trainer.name}</span>
       </div>
+
 
       <div className='workout-container'>
         <h2>Workout Plan</h2>
-        <div className='weekly-plan'>
+
+        <Box>
+          <Table
+            aria-label="user table"
+            sx={{
+              mt: 3,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    DAYS
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    WORKOUT TITLE
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    WORKOUT PLAN
+                  </Typography>
+                </TableCell>
+
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map((day) => (
+                <TableRow key={day}>
+                  <TableCell>{day.charAt(0).toUpperCase() + day.slice(1)}</TableCell>
+                  <TableCell>{workout[day].title}</TableCell>
+                  <TableCell>{workout[day].description}</TableCell>
+                </TableRow>
+              ))}
+
+
+
+
+            </TableBody>
+          </Table>
+        </Box>
+        {/* <div className='weekly-plan'>
           {days.map((day, index) => (
             <div className='week' key={index}>
               <div className='week-day'>{day.charAt(0)}</div>
@@ -246,7 +316,7 @@ function WorkoutPlan() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );
