@@ -20,16 +20,16 @@ const Menuitems = [
     icon: DashboardOutlinedIcon,
     href: "/trainer/assigned-users",
   },
-  {
-    title: "Assign WorkoutPlan",
-    icon: DashboardOutlinedIcon,
-    href: "/trainer/assign-workout-plan",
-  },
-  {
-    title: "User Details",
-    icon: DashboardOutlinedIcon,
-    href: "/trainer/user-information/:clientId",
-  },
+  // {
+  //   title: "Assign WorkoutPlan",
+  //   icon: DashboardOutlinedIcon,
+  //   href: "/trainer/assign-workout-plan",
+  // },
+  // {
+  //   title: "User Details",
+  //   icon: DashboardOutlinedIcon,
+  //   href: "/trainer/user-information/:clientId",
+  // },
  
 ];
 

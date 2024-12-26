@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Box,
@@ -15,13 +15,13 @@ import axios from "axios";
 
 const AllUser = () => {
   const [users, setUsers] = useState([]);
+  const [assignedClients, setAssignedClients] = useState(new Set()); // Tracks assigned clients
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [assignedClients, setAssignedClients] = useState(new Set()); // Tracks assigned clients
 
-  // Fetch user data and assigned clients from the backend
+  // Fetch all users and assigned clients from backend
   useEffect(() => {
-    // Fetch users from backend
+    // Fetch users from the backend
     axios
       .get("http://localhost:3001/users")
       .then((response) => {
@@ -31,13 +31,19 @@ const AllUser = () => {
         console.error("Error fetching user data:", error);
       });
 
-    // Fetch assigned clients from localStorage or backend
-    const assignedFromLocalStorage = JSON.parse(localStorage.getItem("assignedClients")) || [];
-    const assigned = new Set(assignedFromLocalStorage);
-    setAssignedClients(assigned);
+    // Fetch assigned clients from the backend
+    axios
+      .get("http://localhost:3001/get-all-assigned-clients")
+      .then((response) => {
+        const assignedSet = new Set(response.data.map(client => client.client_id)); // Create set from client_ids
+        setAssignedClients(assignedSet);
+      })
+      .catch((error) => {
+        console.error("Error fetching assigned clients:", error);
+      });
   }, []);
 
-  // Filter users based on search
+  // Filter users based on search input
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -45,17 +51,16 @@ const AllUser = () => {
   // Handle the add client action
   const handleAddClient = (userId) => {
     setLoading(true);
-    const trainerId = localStorage.getItem('id');
+    const trainerId =localStorage.getItem('id'); // Assuming the trainerId is provided, replace with actual logic
 
     axios
       .post("http://localhost:3001/assign-client", { trainerId, clientId: userId })
       .then((response) => {
         alert(response.data.message); // Show success message
         
-        // Update assigned clients state
+        // Update assigned clients state after successful assignment
         setAssignedClients((prev) => {
-          const updated = new Set(prev).add(userId);
-          localStorage.setItem("assignedClients", JSON.stringify(Array.from(updated))); // Persist in localStorage
+          const updated = new Set(prev).add(userId); // Add the newly assigned client
           return updated;
         });
         

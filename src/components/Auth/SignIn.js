@@ -76,7 +76,7 @@ const SignIn = () => {
 
     axios.post('http://localhost:3001/login', { email, password })
     .then(response => {
-      const { token, role } = response.data;
+      const { token, role,id } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
       localStorage.setItem('id',id);
@@ -91,27 +91,7 @@ const SignIn = () => {
     });
   
 
-  //   // Example API call (replace with actual endpoint)
-  //   fetch("http://localhost:3001/login", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ email, password }),
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Invalid login credentials.");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log("Login successful:", data);
-  //       // Redirect or handle login success
-  //     })
-  //     .catch((error) => {
-  //       setErrorMessage(error.message);
-  //     });
+
   };
 
   return (

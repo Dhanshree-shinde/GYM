@@ -12,7 +12,6 @@ const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));
 /*****Pages******/
 const Dashboard1 = lazy(() => import("../views/dashboards/Dashboard1.js"));
 
-const Account = lazy(() => import("../views/Accounts/AccountProfile.js"));
 const ExAccount = lazy(() => import("../views/Accounts/Account.js"));
 
 const WorkoutPlan = lazy(() => import("../views/WorkoutPlan/WorkoutPlan.js"));
@@ -48,7 +47,7 @@ const ThemeRoutes = [
     children: [
       { path: "/client/dashboards/dashboard1", element: <Dashboard1 /> },
       { path: "/client/accounts/account", element: <ExAccount /> },
-      { path: "/client/accounts/accountProfile", element: <Account /> },
+      // { path: "/client/accounts/accountProfile", element: <Account /> },
       { path: "/client/workout/workoutplan", element: <WorkoutPlan /> },
       { path: "/client/payment/pay", element: <PaymentPage /> },
       { path: "/client/save-card-info", element: <SaveCardInfoPage /> },
