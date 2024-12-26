@@ -168,7 +168,7 @@ import axios from 'axios';
 
 function WorkoutPlan() {
 
-  const clientId = 1;
+  const clientId = localStorage.getItem('id');
   const [user, setUser] = useState("");
   const [trainer, setTrainer] = useState("");
 

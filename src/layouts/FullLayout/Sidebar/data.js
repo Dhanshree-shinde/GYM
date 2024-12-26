@@ -12,7 +12,7 @@ const Menuitems = [
   {
     title: "Dashboard",
     icon: DashboardOutlinedIcon,
-    href: "/dashboards/dashboard1",
+    href: "/client/dashboards/dashboard1",
   },
   // {
   //   title: "Autocomplete",
@@ -57,24 +57,24 @@ const Menuitems = [
   {
     title: "Account",
     icon: DescriptionOutlinedIcon,
-    href: "/accounts/account",
+    href: "/client/accounts/account",
   },
 
   // {
   //   title: "Account",
   //   icon: DescriptionOutlinedIcon,
-  //   href: "/accounts/accountProfile",
+  //   href: "/client/accounts/accountProfile",
   // },
   {
     title: "WorkoutPlan",
     icon: AutoAwesomeMosaicOutlinedIcon,
-    href: "/workout/workoutplan",
+    href: "/client/workout/workoutplan",
   },
 
   {
       title: "Payment",
       icon: SwitchLeftOutlinedIcon,
-      href: "/payment/pay",
+      href: "/client/payment/pay",
     },
 ];
 

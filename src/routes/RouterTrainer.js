@@ -1,5 +1,9 @@
-import { lazy } from "react";
-import { Navigate } from "react-router-dom";
+import React from "react";
+import {  Navigate } from "react-router-dom"; // Ensure Navigate is imported
+import PrivateRoute from './PrivateRoute';
+import { lazy } from 'react';
+
+// Rest of the code...
 
 /****Layouts*****/
 const FullLayoutTrainer = lazy(() => import("../layouts/FullLayout/FullLayoutTrainer.js"));
@@ -20,22 +24,45 @@ const UserDetails = lazy(() => import("../views/Trainer/UserDetailPage.js"));
 
 /*****Routes******/
 
+
 const TrainerRoutes = [
   { 
     path: "/",
-    element: <FullLayoutTrainer />,
+    element: <Navigate to="/login" />, // Redirect to login if accessed directly
+  },
+  { 
+    path: "/trainer",
+    element: (
+      <PrivateRoute allowedRole="Trainer">
+        <FullLayoutTrainer />
+      </PrivateRoute>
+    ),
     children: [
-      { path: "/", element: <Navigate to="/trainer/all-users" /> },
-      
       { path: "/trainer/all-users", element: <AllUser /> },
       { path: "/trainer/assigned-users", element: <AssignedUsers /> },
       { path: "/trainer/assign-workout-plan", element: <AssignWorkoutPlan /> },
-      {path:"/trainer/user-information/:clientId" , element:<UserDetails/>},
-
+      { path: "/trainer/user-information/:clientId", element: <UserDetails /> },
     ],
   },
   { path: "/login", element: <SignIn /> },
   { path: "/register", element: <SignUp /> },
 ];
+// const TrainerRoutes = [
+//   { 
+//     path: "/",
+//     element: <FullLayoutTrainer />,
+//     children: [
+//       { path: "/", element: <Navigate to="/trainer/all-users" /> },
+      
+//       { path: "/trainer/all-users", element: <AllUser /> },
+//       { path: "/trainer/assigned-users", element: <AssignedUsers /> },
+//       { path: "/trainer/assign-workout-plan", element: <AssignWorkoutPlan /> },
+//       {path:"/trainer/user-information/:clientId" , element:<UserDetails/>},
+
+//     ],
+//   },
+//   { path: "/login", element: <SignIn /> },
+//   { path: "/register", element: <SignUp /> },
+// ];
 
 export default TrainerRoutes;

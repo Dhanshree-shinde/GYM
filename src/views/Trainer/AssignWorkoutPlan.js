@@ -17,7 +17,7 @@ const AssignWorkoutPlan = ({ clientId }) => {
   clientId=1;
   // Fetch workout plan from backend on component load
   useEffect(() => {
-    const clientId=1;
+    const clientId = localStorage.getItem('id');
 
 
     if (clientId) {

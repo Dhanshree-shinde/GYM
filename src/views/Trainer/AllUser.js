@@ -45,7 +45,7 @@ const AllUser = () => {
   // Handle the add client action
   const handleAddClient = (userId) => {
     setLoading(true);
-    const trainerId = 16; // Hardcoding the trainer ID as 16 (for trainer with id = 16)
+    const trainerId = localStorage.getItem('id');
 
     axios
       .post("http://localhost:3001/assign-client", { trainerId, clientId: userId })

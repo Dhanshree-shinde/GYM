@@ -63,7 +63,7 @@ const PaymentPage = () => {
   const navigate = useNavigate();
 
   const handleCompletePayment = () => {
-    navigate("/save-card-info");
+    navigate("/client/save-card-info");
   };
 
   return (

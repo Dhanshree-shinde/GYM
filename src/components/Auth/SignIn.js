@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
+import axios from "axios"
 const SignIn = () => {
+    const navigate = useNavigate();
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -70,27 +74,44 @@ const SignIn = () => {
       return;
     }
 
-    // Example API call (replace with actual endpoint)
-    fetch("http://localhost:3001/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
+    axios.post('http://localhost:3001/login', { email, password })
+    .then(response => {
+      const { token, role } = response.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+      localStorage.setItem('id',id);
+      navigate(role === 'trainer' ? '/trainer/all-users' : '/client/dashboards/dashboard1');
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Invalid login credentials.");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Login successful:", data);
-        // Redirect or handle login success
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-      });
+    .then((data) => {
+      console.log("Login successful:", data);
+      // Redirect or handle login success
+    })
+    .catch(error => {
+      console.error('Login failed:', error.response.data.message);
+    });
+  
+
+  //   // Example API call (replace with actual endpoint)
+  //   fetch("http://localhost:3001/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ email, password }),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Invalid login credentials.");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Login successful:", data);
+  //       // Redirect or handle login success
+  //     })
+  //     .catch((error) => {
+  //       setErrorMessage(error.message);
+  //     });
   };
 
   return (

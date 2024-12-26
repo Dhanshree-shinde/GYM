@@ -14,7 +14,10 @@ const Clients = () => {
   const [selectedClientId, setSelectedClientId] = useState(null); // Selected clientId for the modal
 
   useEffect(() => {
-    const trainerId = 16;
+
+    const trainerId = localStorage.getItem('id');
+
+    
     axios
       .post("http://localhost:3001/get-trainers-assigned-clients", { trainerId })
       .then((response) => {
