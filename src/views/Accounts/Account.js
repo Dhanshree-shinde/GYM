@@ -362,22 +362,45 @@ const Account = () => {
     }
   };
 
+
+
   // Trigger the hidden file input
   const handleUploadClick = () => {
     document.getElementById('fileInput').click();
+  if (!file) {
+    alert('No file selected!');
+    return;
+  }
 
-
+    
     const formData = new FormData();
     formData.append('photo', file); // Ensure the key matches 'photo'
     formData.append('clientId', clientId); // Add clientId as part of the form data
   
-    axios
-      .post('http://localhost:3001/upload-photo', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }, // Optional, Axios sets this automatically
+    // axios
+      // .post('http://localhost:3001/upload-photo', formData, {
+      //   headers: { 'Content-Type': 'multipart/form-data' }, // Optional, Axios sets this automatically
+      // })
+
+      fetch("http://localhost:3001/upload-photo", {
+        method: "POST",
+        body: formData, // Form data instead of JSON
       })
-      .then(() => {
+      .then((response) => {
+        if (response.ok) {
+          return response.json(); // Assuming the server sends the uploaded photo's URL or file name in the response
+        }
+        throw new Error('Failed to upload photo');
+      })
+      .then((data) => {
+        // Assuming the server sends the photo URL in 'data.photo_url'
+        setUser({
+          ...user,
+          photo_url: data.photo_url,  // Update the user state with the new photo URL
+        });
         alert('Photo uploaded!');
       })
+      
       .catch((error) => {
         console.error('Error uploading photo:', error);
       });
@@ -401,6 +424,8 @@ const Account = () => {
             alt="Profile"
             className="profile-picture"
           />
+
+          
           <h2 className="profile-name">{user.name}</h2>
           {/* Hidden file input */}
           <input
