@@ -120,3 +120,9 @@
   height: 100%;
   object-fit: cover; /* Scales the image while maintaining its aspect ratio */
 }
+.account-container {
+  padding: 20px !important;
+}
+.account-container .form-group label {
+  font-weight: bold;
+}

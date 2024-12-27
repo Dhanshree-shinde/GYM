@@ -60,6 +60,8 @@ const Clients = () => {
             <TableCell><Typography color="textSecondary" variant="h6">Email</Typography></TableCell>
             <TableCell><Typography color="textSecondary" variant="h6">Phone number</Typography></TableCell>
             <TableCell><Typography color="textSecondary" variant="h6">Action</Typography></TableCell>
+            <TableCell><Typography color="textSecondary" variant="h6">Action</Typography></TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
@@ -80,6 +82,16 @@ const Clients = () => {
                   size="large"
                 >
                   Assign Workout
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Button
+                  onClick={() => navigate('/trainer/add-client-data')}
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                >
+                  Add Data
                 </Button>
               </TableCell>
             </TableRow>

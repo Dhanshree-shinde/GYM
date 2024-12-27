@@ -2,6 +2,7 @@ import React from "react";
 import {  Navigate } from "react-router-dom"; // Ensure Navigate is imported
 import PrivateRoute from './PrivateRoute';
 import { lazy } from 'react';
+import AddClientData from "../views/Trainer/AddClientData.js";
 
 // Rest of the code...
 
@@ -51,6 +52,8 @@ const ThemeRoutes = [
       { path: "/client/workout/workoutplan", element: <WorkoutPlan /> },
       { path: "/client/payment/pay", element: <PaymentPage /> },
       { path: "/client/save-card-info", element: <SaveCardInfoPage /> },
+
+      
     ],
   },
   { path: "/login", element: <SignIn /> },
@@ -58,25 +61,5 @@ const ThemeRoutes = [
 ];
 
 
-// const ThemeRoutes = [
-//   { 
-//     path: "/",
-//     element: <FullLayout />,
-//     children: [
-//       { path: "/", element: <Navigate to="dashboards/dashboard1" /> },
-//       { path: "dashboards/dashboard1", exact: true, element: <Dashboard1 /> },
-//       { path: "/accounts/account", element: <ExAccount /> },
-//       { path: "/accounts/accountProfile", element: <Account /> },
-//       { path: "/workout/workoutplan", element: <WorkoutPlan /> },
-//       { path: "/payment/pay", element: <PaymentPage /> },
-//       { path: "/save-card-info", element: <SaveCardInfoPage /> },
-      
-
-
-//     ],
-//   },
-//   { path: "/login", element: <SignIn /> },
-//   { path: "/register", element: <SignUp /> },
-// ];
 
 export default ThemeRoutes;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { TextField, Typography, Button, MenuItem, Link, Select, InputLabel, FormControl, FormHelperText, Box } from "@mui/material";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -13,209 +14,438 @@ const SignUp = () => {
   const [role, setRole] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");  // Added for date input
 
-  const styles = {
-    container: {
-      maxWidth: "500px",
-      margin: "50px auto",
-      padding: "30px",
-      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-      borderRadius: "10px",
-      textAlign: "center",
-      backgroundColor: "#fff",
-      fontFamily: "'Poppins', sans-serif",
-    },
-    header: {
-      marginBottom: "20px",
-      fontSize: "24px",
-      color: "#333",
-    },
-    input: {
-      width: "100%",
-      padding: "10px",
-      marginBottom: "15px",
-      borderRadius: "5px",
-      border: "1px solid #ddd",
-      fontSize: "14px",
-    },
-    select: {
-      width: "100%",
-      padding: "10px",
-      marginBottom: "15px",
-      borderRadius: "5px",
-      border: "1px solid #ddd",
-      fontSize: "14px",
-    },
-    button: {
-      width: "100%",
-      padding: "12px",
-      backgroundColor: "#000",
-      color: "#fff",
-      border: "none",
-      borderRadius: "5px",
-      fontSize: "16px",
-      cursor: "pointer",
-    },
-    footer: {
-      marginTop: "20px",
-      fontSize: "14px",
-      color: "#555",
-    },
-    link: {
-      color: "#007BFF",
-      textDecoration: "none",
-    },
-    error: {
-      color: "red",
-      fontSize: "14px",
-      marginBottom: "15px",
-    },
+
+  const handlePhotoChange = (e) => {
+   
+      setPhoto(e.target.files[0]); // Save the file only if it's valid
+    
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     if (!email || !password || !name || !phone || !gender || !role || !dateOfBirth) {
       setErrorMessage("Please fill out all required fields.");
       return;
     }
-
-    // Format the date from dd-mm-yyyy to yyyy-mm-dd
-    const formattedDate = dateOfBirth
-      .split('-')
-      .reverse()
-      .join('-');
-
-    // Example API call (replace with actual endpoint)
+  
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("phone", phone);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("weight", weight);
+    formData.append("height", height);
+    formData.append("photo", photo); // The file from the input
+    formData.append("gender", gender);
+    formData.append("role", role);
+    formData.append("dateOfBirth", dateOfBirth);
+  
+    // Example API call
     fetch("http://localhost:3001/register", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        phone,
-        email,
-        password,
-        weight,
-        height,
-        photo,
-        gender,
-        role,
-        dateOfBirth: formattedDate,
-      }),
+      body: formData, // Form data instead of JSON
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Sign-up failed. Please try again.");
+        if (response.ok) {
+          return response.json();
+        } else {
+          return response.json().then((error) => {
+            throw new Error(error.message || 'Sign-up failed. Please try again.');
+          });
         }
-        return response.json();
       })
       .then((data) => {
+        alert("Sign-up successful");
         console.log("Sign-up successful:", data);
-        // Redirect or handle sign-up success
+        setErrorMessage("");
       })
       .catch((error) => {
+        console.log("Error during sign-up:", error);
         setErrorMessage(error.message);
       });
   };
+  
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Sign Up</h2>
-      {errorMessage && <p style={styles.error}>{errorMessage}</p>}
+    <Box sx={{ maxWidth: 500, margin: "50px auto", padding: 3, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", borderRadius: 2, textAlign: "center", backgroundColor: "#fff" }}>
+      <h2 style={{ marginBottom: "20px", fontSize: "24px", color: "#333" }}>Sign Up</h2>
+      {errorMessage && <p style={{ color: "red", fontSize: "14px", marginBottom: "15px" }}>{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name*"
-          style={styles.input}
+        <TextField
+          label="Name*"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
         />
-        <input
+        <TextField
           type="number"
-          placeholder="Phone Number*"
-          style={styles.input}
+          label="Phone Number*"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           required
+          sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
         />
-        <input
+        <TextField
           type="email"
-          placeholder="Email*"
-          style={styles.input}
+
+          label="Email*"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
         />
-        <input
+        <TextField
+
+          label="Password*"
           type="password"
-          placeholder="Password*"
-          style={styles.input}
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
         />
-        <input
+        <TextField
           type="number"
-          placeholder="Weight (kg)"
-          style={styles.input}
+
+          label="Weight (kg)"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
+          sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
         />
-        <input
+        <TextField
           type="number"
-          placeholder="Height (cm)"
-          style={styles.input}
+          required
+          label="Height (cm)"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={height}
           onChange={(e) => setHeight(e.target.value)}
+          sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
         />
-        <input
-          type="url"
-          placeholder="Photo URL"
-          style={styles.input}
-          value={photo}
-          onChange={(e) => setPhoto(e.target.value)}
+        
+         <TextField
+        type="file"
+        variant="outlined"
+          fullWidth
+          margin="normal"
+        // accept="image/*"
+        onChange={handlePhotoChange}
+        sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
         />
-        <input
-          type="text"
-          placeholder="Date of Birth (dd-mm-yyyy)*"
-          style={styles.input}
+
+
+        <TextField
+          type="date"
+          label="Date of Birth (dd-mm-yyyy)*"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={dateOfBirth}
           onChange={(e) => setDateOfBirth(e.target.value)}
           required
+          sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
         />
-        <select
-          style={styles.select}
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          required
-        >
-          <option value="" disabled>
-            Gender*
-          </option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Others">Others</option>
-        </select>
-        <select
-          style={styles.select}
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          required
-        >
-          <option value="" disabled>
-            Role*
-          </option>
-          <option value="client">Client</option>
-          <option value="trainer">Trainer</option>
-        </select>
-        <button type="submit" style={styles.button}>
+        <FormControl fullWidth margin="normal" required sx={{ marginBottom: 2 }}>
+          <InputLabel>Gender*</InputLabel>
+          <Select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            label="Gender*"
+            sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px" }}
+          >
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+            <MenuItem value="Others">Others</MenuItem>
+          </Select>
+          <FormHelperText>Required</FormHelperText>
+        </FormControl>
+        <FormControl fullWidth margin="normal" required sx={{ marginBottom: 2 }}>
+          <InputLabel>Role*</InputLabel>
+          <Select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            label="Role*"
+            sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px" }}
+          >
+            <MenuItem value="client">Client</MenuItem>
+            <MenuItem value="trainer">Trainer</MenuItem>
+          </Select>
+          <FormHelperText>Required</FormHelperText>
+        </FormControl>
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ padding: "12px", borderRadius: 1, fontSize: "16px", backgroundColor: "#000", color: "#fff" }}>
           Sign Up
-        </button>
+        </Button>
+
+        <Typography variant="body2" sx={{ marginTop: "10px", fontSize: "14px", color: "#555" }}>
+          <Link href="/login" sx={{ color: "#007BFF", textDecoration: "none" }}>
+            Back to sign in
+          </Link>
+        </Typography>
+
+
       </form>
-    </div>
+    </Box>
   );
 };
 
 export default SignUp;
+
+
+// import React, { useState } from "react";
+// import { TextField, Typography, Button, MenuItem, Link, Select, InputLabel, FormControl, FormHelperText, Box } from "@mui/material";
+
+// const SignUp = () => {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [errorMessage, setErrorMessage] = useState("");
+//   const [name, setName] = useState("");
+//   const [phone, setPhone] = useState(null);
+//   const [weight, setWeight] = useState("");
+//   const [height, setHeight] = useState("");
+//   const [photo, setPhoto] = useState("");
+//   const [gender, setGender] = useState("");
+//   const [role, setRole] = useState("");
+//   const [dateOfBirth, setDateOfBirth] = useState("");  // Added for date input
+
+
+//   const handlePhotoChange = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const validImageTypes = ["image/jpeg", "image/png", "image/jpg"];
+//       const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+  
+//       if (!validImageTypes.includes(file.type)) {
+//         alert("Please upload a valid image file (JPEG or PNG).");
+//         return;
+//       }
+  
+//       if (file.size > MAX_FILE_SIZE) {
+//         alert("File size exceeds 2MB. Please upload a smaller file.");
+//         return;
+//       }
+  
+//       const reader = new FileReader();
+//       reader.onload = () => {
+//         setPhoto(reader.result); // Save Base64 string to state
+//       };
+//       reader.onerror = (error) => {
+//         console.error("Error reading file:", error);
+//         alert("An error occurred while uploading the file. Please try again.");
+//       };
+//       reader.readAsDataURL(file); // Convert file to Base64
+//     }
+//   };
+  
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     if (!email || !password || !name || !phone || !gender || !role || !dateOfBirth) {
+//       setErrorMessage("Please fill out all required fields.");
+//       return;
+//     }
+
+//     // Format the date from dd-mm-yyyy to yyyy-mm-dd
+//     // const formattedDate = dateOfBirth
+//     //   .split('-')
+//     //   .reverse()
+//     //   .join('-');
+
+//     // Example API call (replace with actual endpoint)
+//     fetch("http://localhost:3001/register", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         name,
+//         phone,
+//         email,
+//         password,
+//         weight,
+//         height,
+//         photo,
+//         gender,
+//         role,
+//         dateOfBirth,
+//       }),
+//     })
+//       .then((response) => {
+//         if (response.ok) {
+//           return response.json();
+//         } else {
+//           return response.json().then((error) => {
+//             throw new Error(error.message || 'Sign-up failed. Please try again.');
+//           });
+//         }
+//       })
+//       .then((data) => {
+//         alert("Sign-up successful")
+//         console.log("Sign-up successful:", data);
+//         setErrorMessage("");
+
+//       })
+//       .catch((error) => {
+//         console.log("Error during sign-up:", error);
+//         setErrorMessage(error.message);
+//       });
+//   };
+
+//   return (
+//     <Box sx={{ maxWidth: 500, margin: "50px auto", padding: 3, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", borderRadius: 2, textAlign: "center", backgroundColor: "#fff" }}>
+//       <h2 style={{ marginBottom: "20px", fontSize: "24px", color: "#333" }}>Sign Up</h2>
+//       {errorMessage && <p style={{ color: "red", fontSize: "14px", marginBottom: "15px" }}>{errorMessage}</p>}
+//       <form onSubmit={handleSubmit}>
+//         <TextField
+//           label="Name*"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           value={name}
+//           onChange={(e) => setName(e.target.value)}
+//           required
+//           sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
+//         />
+//         <TextField
+//           type="number"
+//           label="Phone Number*"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           value={phone}
+//           onChange={(e) => setPhone(e.target.value)}
+//           required
+//           sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
+//         />
+//         <TextField
+//           type="email"
+
+//           label="Email*"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//           required
+//           sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
+//         />
+//         <TextField
+
+//           label="Password*"
+//           type="password"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//           required
+//           sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
+//         />
+//         <TextField
+//           type="number"
+
+//           label="Weight (kg)"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           value={weight}
+//           onChange={(e) => setWeight(e.target.value)}
+//           sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
+//         />
+//         <TextField
+//           type="number"
+//           required
+//           label="Height (cm)"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           value={height}
+//           onChange={(e) => setHeight(e.target.value)}
+//           sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
+//         />
+
+//         <TextField
+//           type="file"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           accept="image/*"
+//           onChange={handlePhotoChange}
+//           sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
+//           required
+//         />
+
+
+
+//         <TextField
+//           type="date"
+//           label="Date of Birth (dd-mm-yyyy)*"
+//           variant="outlined"
+//           fullWidth
+//           margin="normal"
+//           value={dateOfBirth}
+//           onChange={(e) => setDateOfBirth(e.target.value)}
+//           required
+//           sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px", marginBottom: 2 }}
+//         />
+//         <FormControl fullWidth margin="normal" required sx={{ marginBottom: 2 }}>
+//           <InputLabel>Gender*</InputLabel>
+//           <Select
+//             value={gender}
+//             onChange={(e) => setGender(e.target.value)}
+//             label="Gender*"
+//             sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px" }}
+//           >
+//             <MenuItem value="Male">Male</MenuItem>
+//             <MenuItem value="Female">Female</MenuItem>
+//             <MenuItem value="Others">Others</MenuItem>
+//           </Select>
+//           <FormHelperText>Required</FormHelperText>
+//         </FormControl>
+//         <FormControl fullWidth margin="normal" required sx={{ marginBottom: 2 }}>
+//           <InputLabel>Role*</InputLabel>
+//           <Select
+//             value={role}
+//             onChange={(e) => setRole(e.target.value)}
+//             label="Role*"
+//             sx={{ borderRadius: 1, borderColor: "#ddd", fontSize: "14px" }}
+//           >
+//             <MenuItem value="client">Client</MenuItem>
+//             <MenuItem value="trainer">Trainer</MenuItem>
+//           </Select>
+//           <FormHelperText>Required</FormHelperText>
+//         </FormControl>
+//         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ padding: "12px", borderRadius: 1, fontSize: "16px", backgroundColor: "#000", color: "#fff" }}>
+//           Sign Up
+//         </Button>
+
+//         <Typography variant="body2" sx={{ marginTop: "10px", fontSize: "14px", color: "#555" }}>
+//           <Link href="/login" sx={{ color: "#007BFF", textDecoration: "none" }}>
+//             Back to sign in
+//           </Link>
+//         </Typography>
+
+
+//       </form>
+//     </Box>
+//   );
+// };
+
+// export default SignUp;

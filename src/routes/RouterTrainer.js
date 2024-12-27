@@ -21,6 +21,7 @@ const AssignWorkoutPlan=lazy(() => import("../views/Trainer/AssignWorkoutPlan.js
 // form layouts
 const FormLayouts = lazy(() => import("../views/FormLayouts/FormLayouts.js"));
 const UserDetails = lazy(() => import("../views/Trainer/UserDetailPage.js"));
+const AddClientData = lazy(() => import("../views/Trainer/AddClientData.js"));
 
 /*****Routes******/
 
@@ -42,6 +43,8 @@ const TrainerRoutes = [
       { path: "/trainer/assigned-users", element: <AssignedUsers /> },
       { path: "/trainer/assign-workout-plan", element: <AssignWorkoutPlan /> },
       { path: "/trainer/user-information/:clientId", element: <UserDetails /> },
+      { path: "/trainer/add-client-data", element: <AddClientData /> },
+
     ],
   },
   { path: "/login", element: <SignIn /> },

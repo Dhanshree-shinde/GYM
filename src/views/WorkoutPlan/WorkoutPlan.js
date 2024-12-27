@@ -1,155 +1,4 @@
 
-
-
-// import React from "react";
-// import '../../css/WorkoutPlan.css';
-// import '../../css/workout.css';
-
-// // import "./WorkoutPlan.css"; // Import the external CSS file
-
-
-// function WorkoutPlan() {
-//   return (
-//     <div className="workout-plan-container">
-//       {/* Top Section */}
-//       <div className="workout-header">
-//         <div className="photo-placeholder">Photo</div>
-//         <div className="name-container">
-//           <label className="name-label">Name</label>
-//           <input type="text" className="name-input" placeholder="Enter Name" />
-//         </div>
-//         <div className="weight-box">
-//           <label>Avg. Weight -</label>
-//         </div>
-//       </div>
-
-//       {/* Trainer Section */}
-//       <div className="trainer-container">
-//         <label className="trainer-label">Trainer name</label>
-//         <input type="text" className="trainer-input" placeholder="Enter Trainer Name" />
-//       </div>
-
-//       {/* Workout Plan */}
-//       <div className="workout-plan-section">
-//         <label className="workout-title">Workout Plan</label>
-//         <div className="workout-days">
-//           <div className="day">
-//             <span>M</span>
-//             <button>U</button>
-//           </div>
-//           <div className="day">
-//             <span>T</span>
-//             <button>B</button>
-//           </div>
-//           <div className="day">
-//             <span>W</span>
-//             <button>C</button>
-//           </div>
-//           <div className="day">
-//             <span>T</span>
-//             <button>R</button>
-//           </div>
-//           <div className="day">
-//             <span>F</span>
-//             <button>S</button>
-//           </div>
-//           <div className="day">
-//             <span>S</span>
-//             <button>L</button>
-//           </div>
-//           <div className="day">
-//             <span>S</span>
-//             <button>R</button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default WorkoutPlan;
-
-
-
-// const WorkoutPlan = () => {
-//   return (
-//     <div className="container">
-//       {/* Header Section */}
-//       <div className="header">
-//         <div className="photo">Photo</div>
-//         <div className="name-container">
-//           <h2 className="name">Name</h2>
-//         </div>
-//         <div className="ax-weight">
-//           <p>Ax: </p>
-//           <p>Weight:</p>
-//         </div>
-//       </div>
-
-//       {/* Trainer Name */}
-//       <div className="trainer-container">
-//         <p className="trainer-label">Trainer Name</p>
-//         <input className="input-box" type="text" />
-//       </div>
-
-//       {/* Workout Plan */}
-//       <div className="workout-container">
-//         <p className="workout-title">Workout Plan</p>
-//         <div className="days-container">
-//           {/* Days */}
-//           {["M", "T", "W", "T", "F", "S", "S"].map((day, index) => (
-//             <div key={index} className="day-block">
-//               <p className="day">{day}</p>
-//               <div className="circle">{["U", "B", "C", "R", "S", "L", "R"][index]}</div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default WorkoutPlan;
-
-// import React from 'react';
-// import '../../css/WorkoutPlan.css';
-
-// const WorkoutPlan = ({ photo, weight, age, clientName, trainerName, workoutDays }) => {
-//   return (
-//     <div className="workout-plan">
-//       <div className="header">
-//         <div className="photo">
-//           <img src={photo} alt="Client" />
-//         </div>
-//         <div className="info">
-//           <div className="details">
-//             <span>Weight: {weight} kg</span>
-//             <span>Age: {age} years</span>
-//           </div>
-//           <div className="names">
-//             <h3>{clientName}</h3>
-//             <p>Trainer: {trainerName}</p>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="workout-box">
-//         <h4>Weekly Workout Plan</h4>
-//         <div className="days">
-//           {workoutDays.map((day, index) => (
-//             <div key={index} className="day">
-//               <div className="icon">{day.icon}</div>
-//               <div className="day-name">{day.name}</div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default WorkoutPlan;
-
 import React, { useState, useEffect } from 'react';
 import '../../css/workout.css';
 import {
@@ -183,24 +32,31 @@ function WorkoutPlan() {
   });
 
   // clientId=1;
-
   useEffect(() => {
-
     const fetchData = async () => {
       try {
-        const [userResponse, trainerResponse, workoutResponse] = await Promise.all([
-          axios.get(`http://localhost:3001/single-user-detail/${clientId}`),
-          axios.get(`http://localhost:3001/get-trainer-name/${clientId}`),
-          axios.get(`http://localhost:3001/get-workout-plan/${clientId}`)
-
-        ]);
-
+        // Fetch user details
+        const userResponse = await axios.get(`http://localhost:3001/single-user-detail/${clientId}`);
         setUser(userResponse.data);
-        setTrainer(trainerResponse.data);
-        setWorkout(workoutResponse.data)
-
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching user details:", error);
+      }
+
+      try {
+        // Fetch trainer name
+        const trainerResponse = await axios.get(`http://localhost:3001/get-trainer-name/${clientId}`);
+        setTrainer(trainerResponse.data);
+      } catch (error) {
+        console.warn("Trainer not found or error fetching trainer:", error);
+        setTrainer(null); // Set trainer to null if not found
+      }
+
+      try {
+        // Fetch workout plan
+        const workoutResponse = await axios.get(`http://localhost:3001/get-workout-plan/${clientId}`);
+        setWorkout(workoutResponse.data);
+      } catch (error) {
+        console.error("Error fetching workout plan:", error);
       }
     };
 
@@ -217,21 +73,21 @@ function WorkoutPlan() {
     S2: { name: 'Rest', src: '/images/u4.jpg' },
   };
 
-  var dob = new Date(user.date_of_birth);
+  var dob = new Date(user.date_of_birth); // User's date of birth
 
-  //calculate month difference from current date in time  
-  var month_diff = Date.now() - dob.getTime();
+  // Get the current date
+  var currentDate = new Date();
+  
+  // Calculate the age by subtracting the birth year from the current year
+  var age = currentDate.getFullYear() - dob.getFullYear();
+  
+  // Adjust the age if the birthday hasn't occurred yet this year
+  var month = currentDate.getMonth() - dob.getMonth();
+  if (month < 0 || (month === 0 && currentDate.getDate() < dob.getDate())) {
+      age--;
+  }
 
-  //convert the calculated difference in date format  
-  var age_dt = new Date(month_diff);
-
-  //extract year from date      
-  var year = age_dt.getUTCFullYear();
-
-  //now calculate the age of the user  
-  const age = Math.abs(year - 1970);
-
-
+ 
 
   const days = ['M', 'T', 'W', 'T2', 'F', 'S', 'S2'];
   // const trainer = 'Dhanshree Shinde';
@@ -241,7 +97,7 @@ function WorkoutPlan() {
       <div className='user-info'>
         <div className='photo-container'>
           <div className='photo'>
-            <img src='/images/u4.jpg' alt='User' />
+            <img src={`http://localhost:3001/images/${user.photo_url}`} alt='User' />
           </div>
         </div>
         <div className='name'>
@@ -254,7 +110,12 @@ function WorkoutPlan() {
       </div>
 
       <div className='trainer-container'>
-       <span className='trainer'> Trainer Name : {trainer.name}</span>
+        <span className='trainer'> {trainer ? (
+          <p>Trainer: {trainer.name}</p>
+        ) : (
+          <p>No trainer assigned</p>
+        )}
+        </span>
       </div>
 
 

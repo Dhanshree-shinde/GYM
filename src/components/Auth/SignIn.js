@@ -1,70 +1,16 @@
+
+
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { TextField, Button, Checkbox, FormControlLabel, Typography, Link, Box } from "@mui/material";
 
-import axios from "axios"
 const SignIn = () => {
-    const navigate = useNavigate();
-  
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
-  const styles = {
-    container: {
-      maxWidth: "400px",
-      margin: "50px auto",
-      padding: "30px",
-      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-      borderRadius: "10px",
-      textAlign: "center",
-      backgroundColor: "#fff",
-      fontFamily: "'Poppins', sans-serif",
-    },
-    header: {
-      marginBottom: "20px",
-      fontSize: "24px",
-      color: "#333",
-    },
-    input: {
-      width: "100%",
-      padding: "10px",
-      marginBottom: "15px",
-      borderRadius: "5px",
-      border: "1px solid #ddd",
-      fontSize: "14px",
-    },
-    checkboxContainer: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "start",
-      marginBottom: "15px",
-      fontSize: "14px",
-    },
-    button: {
-      width: "100%",
-      padding: "12px",
-      backgroundColor: "#000",
-      color: "#fff",
-      border: "none",
-      borderRadius: "5px",
-      fontSize: "16px",
-      cursor: "pointer",
-    },
-    footer: {
-      marginTop: "20px",
-      fontSize: "14px",
-      color: "#555",
-    },
-    link: {
-      color: "#007BFF",
-      textDecoration: "none",
-    },
-    error: {
-      color: "red",
-      fontSize: "14px",
-      marginBottom: "15px",
-    },
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -75,69 +21,107 @@ const SignIn = () => {
     }
 
     axios.post('http://localhost:3001/login', { email, password })
-    .then(response => {
-      const { token, role,id } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', role);
-      localStorage.setItem('id',id);
-      navigate(role === 'trainer' ? '/trainer/all-users' : '/client/dashboards/dashboard1');
-    })
-    .then((data) => {
-      console.log("Login successful:", data);
-      // Redirect or handle login success
-    })
-    .catch(error => {
-      console.error('Login failed:', error.response.data.message);
-    });
-  
-
-
+      .then(response => {
+        const { token, role, id } = response.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
+        localStorage.setItem('id', id);
+        alert("Sign-in successful")
+        navigate(role === 'trainer' ? '/trainer/all-users' : '/client/dashboards/dashboard1');
+      })
+      .catch(error => {
+        setErrorMessage(error.response.data.message);
+      });
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Sign In</h2>
-      {errorMessage && <p style={styles.error}>{errorMessage}</p>}
+    <Box sx={{
+      maxWidth: "400px",
+      margin: "50px auto",
+      padding: "30px",
+      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+      borderRadius: "10px",
+      textAlign: "center",
+      backgroundColor: "#fff",
+      fontFamily: "'Poppins', sans-serif",
+    }}>
+      <Typography variant="h5" sx={{ marginBottom: "20px", fontSize: "24px", color: "#333" }}>
+        Sign In
+      </Typography>
+      {errorMessage && <Typography color="error" sx={{ marginBottom: "15px", fontSize: "14px" }}>{errorMessage}</Typography>}
       <form onSubmit={handleSubmit}>
-        <input
+        <TextField
+          label="Email"
           type="email"
-          placeholder="Email"
-          style={styles.input}
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          sx={{
+            input: { fontSize: "14px" },
+            "& .MuiOutlinedInput-root": { borderRadius: "5px" }
+          }}
         />
-        <input
+        <TextField
+          label="Password"
           type="password"
-          placeholder="Password"
-          style={styles.input}
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          sx={{
+            input: { fontSize: "14px" },
+            "& .MuiOutlinedInput-root": { borderRadius: "5px" }
+          }}
         />
-        <div style={styles.checkboxContainer}>
-          <input type="checkbox" id="rememberMe" />
-          <label htmlFor="rememberMe" style={{ marginLeft: "5px" }}>
-            Remember me
-          </label>
-        </div>
-        <button type="submit" style={styles.button}>
+        <Box sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "start",
+          marginBottom: "15px",
+          fontSize: "14px",
+        }}>
+          <FormControlLabel
+            control={<Checkbox />}
+            label="Remember me"
+            sx={{ marginLeft: "5px" }}
+          />
+        </Box>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{
+            padding: "12px",
+            fontSize: "16px",
+            borderRadius: "5px",
+            backgroundColor: "#000",
+            "&:hover": {
+              backgroundColor: "#333"
+            }
+          }}
+        >
           Sign In
-        </button>
+        </Button>
       </form>
-      <p style={styles.footer}>
+      <Typography variant="body2" sx={{ marginTop: "20px", fontSize: "14px", color: "#555" }}>
         Forgot your password?{" "}
-        <a href="#" style={styles.link}>
+        <Link href="#" sx={{ color: "#007BFF", textDecoration: "none" }}>
           Reset it here
-        </a>
-      </p>
-      <p style={styles.footer}>
+        </Link>
+      </Typography>
+      <Typography variant="body2" sx={{ marginTop: "10px", fontSize: "14px", color: "#555" }}>
         Don’t have an account?{" "}
-        <a href="/register" style={styles.link}>
+        <Link href="/register" sx={{ color: "#007BFF", textDecoration: "none" }}>
           Sign Up
-        </a>
-      </p>
-    </div>
+        </Link>
+      </Typography>
+    </Box>
   );
 };
 
