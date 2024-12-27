@@ -19,7 +19,6 @@ const SignIn = lazy(() => import("../components/Auth/SignIn.js"));
 const AssignWorkoutPlan=lazy(() => import("../views/Trainer/AssignWorkoutPlan.js"));
 
 // form layouts
-const FormLayouts = lazy(() => import("../views/FormLayouts/FormLayouts.js"));
 const UserDetails = lazy(() => import("../views/Trainer/UserDetailPage.js"));
 const AddClientData = lazy(() => import("../views/Trainer/AddClientData.js"));
 

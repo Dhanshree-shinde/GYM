@@ -2,10 +2,7 @@ import React from "react";
 import { Grid, Box } from "@mui/material";
 
 import {
-  BlogCard,
-  SalesOverview,
-  ProductPerformance,
-  DailyActivities,
+  
   WeightChart,
   BMIChart, SpeedChart, StaminaChart,
 } from "./dashboard1-components";
