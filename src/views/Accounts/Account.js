@@ -365,7 +365,24 @@ const Account = () => {
   // Trigger the hidden file input
   const handleUploadClick = () => {
     document.getElementById('fileInput').click();
+
+
+    const formData = new FormData();
+    formData.append('photo', file); // Ensure the key matches 'photo'
+    formData.append('clientId', clientId); // Add clientId as part of the form data
+  
+    axios
+      .post('http://localhost:3001/upload-photo', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }, // Optional, Axios sets this automatically
+      })
+      .then(() => {
+        alert('Photo uploaded!');
+      })
+      .catch((error) => {
+        console.error('Error uploading photo:', error);
+      });
   };
+  
   console.log(user);
 
   if (!user.email)
@@ -380,7 +397,7 @@ const Account = () => {
         {/* Profile Card */}
         <div className="profile-card">
           <img
-            src="https://via.placeholder.com/150"
+            src={`http://localhost:3001/images/${user.photo_url}`}
             alt="Profile"
             className="profile-picture"
           />
