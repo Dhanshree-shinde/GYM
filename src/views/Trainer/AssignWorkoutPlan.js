@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField, Grid, Typography, Box } from "@mui/material";
 import axios from "axios";
-const AssignWorkoutPlan = ({ clientId }) => {
+import { useParams } from "react-router-dom";
+const AssignWorkoutPlan = () => {
+
+
 
   const [workoutPlan, setWorkoutPlan] = useState({
     monday: { title: "", description: "" },
@@ -14,10 +17,10 @@ const AssignWorkoutPlan = ({ clientId }) => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  clientId=localStorage.getItem('id');
+  const{clientId}=useParams();
   // Fetch workout plan from backend on component load
   useEffect(() => {
-    const clientId = localStorage.getItem('id');
+
 
 
     if (clientId) {

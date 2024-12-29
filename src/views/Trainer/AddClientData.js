@@ -1,50 +1,55 @@
+
 import {
     Box, Typography, Grid,
     TextField,
     Button,
 } from "@mui/material";
 import { useState } from "react";
+import { useParams } from 'react-router-dom';
+
 import axios from "axios";
 
-
 const AddClientData = () => {
-    const clientId=localStorage.getItem("id");
-    const [clientData, setClientData] = useState(
-        {
-            weight: "",
-            stamina: "",
-            bmi: "",
-            speed: "",
-            height:"",
-            date: "",
-        }
-    );
+    const { clientId } = useParams(); // Get clientId from URL
+
+    const [clientData, setClientData] = useState({
+        weight: "",
+        stamina: "",
+        bmi: "",
+        speed: "",
+        height: "",
+        date: "",
+    });
 
     const handleChange = (field, value) => {
         setClientData({
             ...clientData,
             [field]: value,
-        }
+        });
+    };
 
-        )
-
-    }
     const handleSave = () => {
-        axios.post(`http://localhost:3001/save-client-health-data`,{clientId,clientData})
-        .then((response)=>{
-            alert("Data saved successfully !!!");
-        })
-        .catch((err)=>{
-            console.log("got some error while saving",err);
-        })
+        axios.post(`http://localhost:3001/save-client-health-data`, { clientId, clientData })
+            .then((response) => {
+                alert("Data saved successfully!!!");
+            })
+            .catch((err) => {
+                console.log("Got an error while saving", err);
+            });
 
-    }
+        axios.post(`http://localhost:3001/update-client-height-weight`, { clientId, clientData })
+        .then((response)=>{
+            console.log("height and weight updated ");
+        })
+        .catch((err) => {
+            console.log("Got an error while updating height and weight", err);
+        });
+    };
 
     return (
-
         <Box container display={"flex"} flexDirection={"column"} alignItems={"center"}>
             <Typography style={{ fontWeight: "bold" }} align="center">
-                Add Client data
+                Add Client Data
             </Typography>
 
             <Grid
@@ -53,8 +58,7 @@ const AddClientData = () => {
                 style={{ maxWidth: "600px", margin: "0 auto" }}
                 justifyContent="center"
             >
-
-                <Grid item xs="12" display="flex" flexDirection="column" width="100%">
+                <Grid item xs={12} display="flex" flexDirection="column" width="100%">
                     <Typography variant="h6">Date</Typography>
                     <TextField
                         title="Date"
@@ -117,20 +121,16 @@ const AddClientData = () => {
                             handleChange("stamina", e.target.value);
                         }}
                     />
-
                 </Grid>
-
             </Grid>
+
             <Box mt={2}>
-                <Button variant="contained" onClick={handleSave
-                    
-                }>
+                <Button variant="contained" onClick={handleSave}>
                     Add Data
                 </Button>
             </Box>
         </Box>
-
-
     );
-}
+};
+
 export default AddClientData;

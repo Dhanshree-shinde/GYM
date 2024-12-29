@@ -76,7 +76,7 @@ const Clients = () => {
               <TableCell>{user.phone_number}</TableCell>
               <TableCell>
                 <Button
-                  onClick={() => navigate('/trainer/assign-workout-plan')}
+                  onClick={() => navigate(`/trainer/assign-workout-plan/${user.id}`)}
                   variant="contained"
                   color="primary"
                   size="large"
@@ -86,7 +86,7 @@ const Clients = () => {
               </TableCell>
               <TableCell>
                 <Button
-                  onClick={() => navigate('/trainer/add-client-data')}
+                  onClick={() => navigate(`/trainer/add-client-data/${user.id}`)}
                   variant="contained"
                   color="primary"
                   size="large"

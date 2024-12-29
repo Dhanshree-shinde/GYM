@@ -1,69 +1,30 @@
-// import React from "react";
-// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-
-// const data = [
-//   { name: "Jan", value: 25 },
-//   { name: "Feb", value: 24 },
-//   { name: "Mar", value: 25.5 },
-//   { name: "Apr", value: 24.8 },
-//   { name: "May", value: 25.2 },
-//   { name: "Jun", value: 24.5 },
-//   { name: "Jul", value: 25 },
-//   { name: "Aug", value: 24.7 },
-//   { name: "Sep", value: 25.3 },
-//   { name: "Oct", value: 24.9 },
-//   { name: "Nov", value: 25.1 },
-//   { name: "Dec", value: 24.8 },
-// ];
-
-// const BMIChart = () => {
-//   return (
-//     <div
-//       style={{
-//         padding: "20px",
-//         borderRadius: "12px",
-//         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-//         border: "1px solid #e0e0e0",
-//         backgroundColor: "#fff",
-//       }}
-//     >
-//       <h3 style={{ fontFamily: "Arial, sans-serif", fontWeight: 600, marginBottom: "20px" }}>BMI Overview</h3>
-//       <ResponsiveContainer width="100%" height={300}>
-//         <LineChart data={data}>
-//           <CartesianGrid stroke="#f3f4f6" />
-//           <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#9e9e9e" }} />
-//           <YAxis tick={{ fontSize: 12, fill: "#9e9e9e" }} />
-//           <Tooltip
-//             contentStyle={{
-//               fontSize: 12,
-//               backgroundColor: "#f9f9f9",
-//               borderRadius: "8px",
-//               border: "1px solid #ddd",
-//             }}
-//           />
-//           <Line
-//             type="monotone"
-//             dataKey="value"
-//             stroke="#28a745"
-//             strokeWidth={3}
-//             dot={{ r: 4, fill: "#28a745" }}
-//           />
-//         </LineChart>
-//       </ResponsiveContainer>
-//     </div>
-//   );
-// };
-
-// export default BMIChart;
 
 
 import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import Chart from "react-apexcharts";
-
+import { useState,useEffect } from "react";
+import axios from "axios";
 const BMIChart = () => {
   // Define a single BMI dataset
-  const bmi = [22.5, 23.1, 22.8, 23.5, 22.7, 23.3, 22.9, 23.0, 23.4, 23.7, 23.2, 22.8];
+  // const bmi = [22.5, 23.1, 22.8, 23.5, 22.7, 23.3, 22.9, 23.0, 23.4, 23.7, 23.2, 22.8];
+
+  
+    const clientId=localStorage.getItem('id');
+    
+     const [bmiData, setBmiData] = useState([]);
+     
+       useEffect(() => {
+         axios.get(`http://localhost:3001/get-client-bmi/${clientId}`)
+         .then((response) => {
+           // No need for response.json(), as Axios already parses JSON
+           setBmiData(response.data);
+         })
+         .catch((error) => {
+           console.error("Error fetching data:", error.message);
+         });
+       }, [clientId]);
+
 
   // Define chart options for BMI Line Chart
   const optionsBMIOverview = {
@@ -108,8 +69,8 @@ const BMIChart = () => {
     },
     yaxis: {
       show: true,
-      min: 20,
-      max: 30,
+      min: 50,
+      max: 100,
       tickAmount: 5,
       labels: {
         style: {
@@ -126,7 +87,7 @@ const BMIChart = () => {
   const seriesBMIOverview = [
     {
       name: "BMI",
-      data: bmi, // Use single BMI dataset
+      data: bmiData, // Use single BMI dataset
     },
   ];
 

@@ -1,7 +1,5 @@
 
 
-
-
 import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import Chart from "react-apexcharts";
@@ -9,27 +7,27 @@ import { useEffect,useState } from "react";
 import axios from "axios";
 
 
-const StaminaChart = () => {
-  // Define stamina data for A and B
-  // const staminaData = [80, 85, 82, 88, 83, 86, 80, 85, 87, 90, 85, 88];
+const HeightChart = () => {
+  // Define weight data for each month
 
   const clientId=localStorage.getItem('id');
 
- const [staminaData, setStaminaData] = useState([]);
- 
-   useEffect(() => {
-    axios.get(`http://localhost:3001/get-client-stamina/${clientId}`)
+
+  const [heightData, setHeightData] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/get-client-height/${clientId}`)
     .then((response) => {
       // No need for response.json(), as Axios already parses JSON
-      setStaminaData(response.data);
+      setHeightData(response.data);
     })
     .catch((error) => {
       console.error("Error fetching data:", error.message);
     });
-   }, [clientId]);
- 
-  // Define chart options for Stamina
-  const optionsStaminaOverview = {
+  }, [clientId]);
+
+  // Define chart options for Weight Line Chart
+  const optionsHeightOverview = {
     grid: {
       show: true,
       borderColor: "transparent",
@@ -40,41 +38,26 @@ const StaminaChart = () => {
         bottom: 0,
       },
     },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: "42%",
-        endingShape: "rounded",
-        borderRadius: 5,
-      },
-    },
-    colors: ["#00d084"], // Use a green color for the average stamina bar
-    fill: {
-      type: "solid",
-      opacity: 1,
-    },
     chart: {
-      offsetX: -15,
+      height: 295,
       toolbar: {
         show: false,
       },
       foreColor: "#adb0bb",
       fontFamily: "'DM Sans',sans-serif",
-      sparkline: {
-        enabled: false,
+    },
+    stroke: {
+      curve: "smooth", // Smooth line
+      width: 3,
+    },
+    colors: ["#ff6347"], // Line color for weight
+    markers: {
+      size: 6,
+      hover: {
+        sizeOffset: 3,
       },
     },
-    dataLabels: {
-      enabled: false,
-    },
-    markers: {
-      size: 0,
-    },
-    legend: {
-      show: false,
-    },
     xaxis: {
-      type: "category",
       categories: [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
       ],
@@ -87,30 +70,24 @@ const StaminaChart = () => {
     yaxis: {
       show: true,
       min: 50,
-      max: 100,
-      tickAmount: 3,
+      max: 200,
+      tickAmount: 6,
       labels: {
         style: {
           cssClass: "grey--text lighten-2--text fill-color",
         },
       },
     },
-    stroke: {
-      show: true,
-      width: 5,
-      lineCap: "butt",
-      colors: ["transparent"],
-    },
     tooltip: {
       theme: "dark",
     },
   };
 
-  // Define series data for the average stamina
-  const seriesStaminaOverview = [
+  // Define series data for weight
+  const seriesHeightOverview = [
     {
-      name: "Stamina",
-      data: staminaData, // Use the average of Stamina A and B
+      name: "Height",
+      data: heightData, // Use weight dataset
     },
   ];
 
@@ -125,7 +102,7 @@ const StaminaChart = () => {
         >
           <Box>
             <Typography variant="h3" sx={{ marginBottom: "0" }} gutterBottom>
-              Stamina Overview
+              Weight Overview
             </Typography>
           </Box>
           <Box
@@ -138,24 +115,24 @@ const StaminaChart = () => {
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Box
                 sx={{
-                  backgroundColor: "secondary.main",
+                  backgroundColor: "error.main",
                   borderRadius: "50%",
                   height: 8,
                   width: 8,
                   mr: 1,
                 }}
               />
-              <Typography variant="h6" sx={{ color: "secondary.main" }}>
-                Stamina
+              <Typography variant="h6" sx={{ color: "error.main" }}>
+                Weight
               </Typography>
             </Box>
           </Box>
         </Box>
         <Box sx={{ marginTop: "25px" }}>
           <Chart
-            options={optionsStaminaOverview}
-            series={seriesStaminaOverview}
-            type="bar"
+            options={optionsHeightOverview}
+            series={seriesHeightOverview}
+            type="line"
             height="295px"
           />
         </Box>
@@ -164,4 +141,4 @@ const StaminaChart = () => {
   );
 };
 
-export default StaminaChart;
+export default HeightChart;

@@ -5,18 +5,19 @@ import {
   
   WeightChart,
   BMIChart, SpeedChart, StaminaChart,
+  HeightChart,
 } from "./dashboard1-components";
 
 const Dashboard1 = () => {
-  // 2
 
   return (
     <Box>
       <Grid container spacing={0}>
         
       </Grid>
+      
       <Grid item xs={12} lg={12}>
-        <WeightChart />
+        <WeightChart  />
       </Grid>
       <Grid item xs={12} lg={12}>
         <SpeedChart />
@@ -26,6 +27,9 @@ const Dashboard1 = () => {
       </Grid>
       <Grid item xs={12} lg={12}>
         <StaminaChart />
+      </Grid>
+      <Grid item xs={12} lg={12}>
+        <HeightChart  />
       </Grid>
     </Box>
   );

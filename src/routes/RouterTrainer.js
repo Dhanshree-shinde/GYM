@@ -40,9 +40,9 @@ const TrainerRoutes = [
     children: [
       { path: "/trainer/all-users", element: <AllUser /> },
       { path: "/trainer/assigned-users", element: <AssignedUsers /> },
-      { path: "/trainer/assign-workout-plan", element: <AssignWorkoutPlan /> },
+      { path: "/trainer/assign-workout-plan/:clientId", element: <AssignWorkoutPlan /> },
       { path: "/trainer/user-information/:clientId", element: <UserDetails /> },
-      { path: "/trainer/add-client-data", element: <AddClientData /> },
+      { path: "/trainer/add-client-data/:clientId", element: <AddClientData  /> },
 
     ],
   },
