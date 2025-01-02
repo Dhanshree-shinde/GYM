@@ -20,11 +20,19 @@ const Menuitems = [
     icon: DashboardOutlinedIcon,
     href: "/trainer/assigned-users",
   },
-  // {
-  //   title: "Assign WorkoutPlan",
-  //   icon: DashboardOutlinedIcon,
-  //   href: "/trainer/assign-workout-plan",
-  // },
+
+  {
+    title: "Payments",
+    icon: DashboardOutlinedIcon,
+    href: "/trainer/payments",
+  },
+  {
+    title: "Account",
+    icon: DashboardOutlinedIcon,
+    href: "/trainer/account",
+  },
+
+ 
   // {
   //   title: "User Details",
   //   icon: DashboardOutlinedIcon,

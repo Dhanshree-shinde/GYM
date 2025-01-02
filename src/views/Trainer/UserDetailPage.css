@@ -48,7 +48,12 @@
     margin-right: 20px;
   }
   
-
+.user-button{
+  display: flex
+;
+    flex-direction: row;
+    justify-content: flex-end;
+}
 
    /* UserDetailPage.css */
 /* .user-detail-container {

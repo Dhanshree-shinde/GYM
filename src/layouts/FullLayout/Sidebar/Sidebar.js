@@ -13,7 +13,6 @@ import {
 import { SidebarWidth } from "../../../assets/global/Theme-variable";
 import LogoIcon from "../Logo/LogoIcon";
 import Menuitems from "./data";
-import Buynow from "./Buynow";
 
 const Sidebar = (props) => {
   const [open, setOpen] = React.useState(true);
@@ -77,7 +76,6 @@ const Sidebar = (props) => {
           })}
         </List>
       </Box>
-      {/* <Buynow /> */}
     </Box>
   );
   if (lgUp) {

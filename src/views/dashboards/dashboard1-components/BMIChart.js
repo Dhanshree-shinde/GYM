@@ -43,6 +43,17 @@ const BMIChart = () => {
       toolbar: {
         show: false,
       },
+      toolbar: {
+        show: true,
+        tools: {
+          reset: true, // Add reset zoom functionality
+        },
+      },
+      zoom: {
+        enabled: true, // Enable zoom functionality
+        type: "x", // Zoom along the x-axis
+        autoScaleYaxis: true, // Automatically adjust the y-axis on zoom
+      },
       foreColor: "#adb0bb",
       fontFamily: "'DM Sans',sans-serif",
     },
@@ -70,12 +81,16 @@ const BMIChart = () => {
     yaxis: {
       show: true,
       min: 50,
-      max: 100,
+      max: 200,
       tickAmount: 5,
       labels: {
         style: {
           cssClass: "grey--text lighten-2--text fill-color",
         },
+        formatter: function (val) {
+          return val.toFixed(1); // Force exactly one decimal place
+        },
+
       },
     },
     tooltip: {

@@ -20,6 +20,7 @@ const WorkoutPlan = lazy(() => import("../views/WorkoutPlan/WorkoutPlan.js"));
 const PaymentPage = lazy(() => import("../views/Payment/PaymentPage.js"));
 
 const SaveCardInfoPage = lazy(() => import("../views/Payment/SaveCardInfoPage.js"));
+const Notification = lazy(() => import("../views/Notification/Notification.js"));
 
 
 
@@ -53,7 +54,8 @@ const ThemeRoutes = [
       { path: "/client/payment/pay", element: <PaymentPage /> },
       { path: "/client/save-card-info", element: <SaveCardInfoPage /> },
 
-      
+      { path: "/client/notification", element: <Notification /> },
+
     ],
   },
   { path: "/login", element: <SignIn /> },

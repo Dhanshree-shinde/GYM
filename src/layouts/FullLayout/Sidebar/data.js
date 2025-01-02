@@ -14,6 +14,11 @@ const Menuitems = [
     icon: DashboardOutlinedIcon,
     href: "/client/dashboards/dashboard1",
   },
+  {
+    title: "Notification",
+    icon: DashboardOutlinedIcon,
+    href: "/client/notification",
+  },
   // {
   //   title: "Autocomplete",
   //   icon: AddToPhotosOutlinedIcon,

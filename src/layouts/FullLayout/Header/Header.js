@@ -7,7 +7,8 @@ import AddToPhotosOutlinedIcon from '@mui/icons-material/AddToPhotosOutlined';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-
+import { useNavigate } from 'react-router-dom'; // For navigation after logout
+import axios from 'axios';
 import {
   AppBar,
   Box,
@@ -55,7 +56,32 @@ const Header = (props) => {
   const handleClose5 = () => {
     setAnchorEl5(null);
   };
+  const navigate = useNavigate(); // Hook for navigation
+  const token = localStorage.getItem('token'); // Assuming JWT is stored in localStorage
 
+  const handleLogout = async () => {
+    try {
+
+      // Make the logout request to the backend
+      await axios.post('http://localhost:3001/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send the token in the request header
+        },
+      });
+
+      // Remove JWT from localStorage
+      localStorage.removeItem('token');
+
+      // Redirect to the login page
+      navigate('/login');
+      
+      // Optionally, display a success message or toast
+      console.log('Logged out successfully');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Optionally, display an error message
+    }
+  };
   return (
     <AppBar sx={props.sx} elevation={0} className={props.customClass}>
       <Toolbar>
@@ -81,69 +107,7 @@ const Header = (props) => {
         >
           <AddToPhotosOutlinedIcon />
         </IconButton>
-        <Menu
-          id="dd-menu"
-          anchorEl={anchorEl5}
-          keepMounted
-          open={Boolean(anchorEl5)}
-          onClose={handleClose5}
-          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-          transformOrigin={{ horizontal: "left", vertical: "top" }}
-          sx={{
-            "& .MuiMenu-paper": {
-              width: "250px",
-              right: 0,
-              top: "70px !important",
-            },
-          }}
-        >
-          <MenuItem onClick={handleClose5}>
-            <Avatar
-              sx={{
-                width: "35px",
-                height: "35px",
-              }}
-            />
-            <Box
-              sx={{
-                ml: 2,
-              }}
-            >
-              New account
-            </Box>
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={handleClose5}>
-            <Avatar
-              sx={{
-                width: "35px",
-                height: "35px",
-              }}
-            />
-            <Box
-              sx={{
-                ml: 2,
-              }}
-            >
-              New Page
-            </Box>
-          </MenuItem>
-          <MenuItem onClick={handleClose5}>
-            <Avatar
-              sx={{
-                width: "35px",
-                height: "35px",
-              }}
-            />
-            <Box
-              sx={{
-                ml: 2,
-              }}
-            >
-              New Component
-            </Box>
-          </MenuItem>
-        </Menu>
+        
         <Box flexGrow={1} />
 
         {/* ------------------------------------------- */}
@@ -247,19 +211,9 @@ const Header = (props) => {
             </Box>
           </MenuItem>
           <Divider />
-          <MenuItem onClick={handleClose4}>
-            <ListItemIcon>
-              <PersonAddOutlinedIcon fontSize="small" />
-            </ListItemIcon>
-            Add another account
-          </MenuItem>
-          <MenuItem onClick={handleClose4}>
-            <ListItemIcon>
-              <SettingsOutlinedIcon fontSize="small" />
-            </ListItemIcon>
-            Settings
-          </MenuItem>
-          <MenuItem onClick={handleClose4}>
+         
+         
+          <MenuItem onClick={handleLogout}>
             <ListItemIcon>
               <LogoutOutlinedIcon fontSize="small" />
             </ListItemIcon>

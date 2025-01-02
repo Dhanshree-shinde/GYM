@@ -12,21 +12,22 @@ const Clients = () => {
   const [search, setSearch] = useState("");
   const [openModal, setOpenModal] = useState(false); // Modal visibility state
   const [selectedClientId, setSelectedClientId] = useState(null); // Selected clientId for the modal
-
+  const trainerId = localStorage.getItem('id');
   useEffect(() => {
 
-    const trainerId = localStorage.getItem('id');
-
+    //  trainerId = localStorage.getItem('id');
+    console.log(trainerId)
     
     axios
-      .post("http://localhost:3001/get-trainers-assigned-clients", { trainerId })
+      .get(`http://localhost:3001/get-trainers-assigned-clients/${trainerId}`,   )
+
       .then((response) => {
         setUsers(response.data);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-  }, []);
+  }, [trainerId]);
 
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())

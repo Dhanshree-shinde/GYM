@@ -4,6 +4,8 @@
 // import {
 //   TextField, Button,
 // } from "@mui/material";
+
+
 // const Account = () => {
 //   const clientId = localStorage.getItem('id');
 //   const [user, setUser] = useState({
@@ -278,7 +280,6 @@ const Account = () => {
   const clientId = localStorage.getItem('id');
   const [user, setUser] = useState({
     name: '',
-    email: '',
     phone_number: '',
     height: '',
     weight: '',
@@ -473,8 +474,7 @@ const Account = () => {
                   type="email"
                   id="email"
                   value={user.email}
-                  onChange={(e) => handleChange('email', e.target.value)}
-                  disabled={!isEditing}
+                  disabled={true}
                 />
               </div>
             </div>

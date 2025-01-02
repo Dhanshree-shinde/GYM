@@ -21,6 +21,11 @@ const AssignWorkoutPlan=lazy(() => import("../views/Trainer/AssignWorkoutPlan.js
 // form layouts
 const UserDetails = lazy(() => import("../views/Trainer/UserDetailPage.js"));
 const AddClientData = lazy(() => import("../views/Trainer/AddClientData.js"));
+const Payments = lazy(() => import("../views/Trainer/Payments.js"));
+const PaymentStatus = lazy(() => import("../views/Trainer/PaymentStatus.js"));
+
+
+const Account = lazy(() => import("../views/Trainer/TrainerAccount.js"));
 
 /*****Routes******/
 
@@ -43,28 +48,17 @@ const TrainerRoutes = [
       { path: "/trainer/assign-workout-plan/:clientId", element: <AssignWorkoutPlan /> },
       { path: "/trainer/user-information/:clientId", element: <UserDetails /> },
       { path: "/trainer/add-client-data/:clientId", element: <AddClientData  /> },
+      { path: "/trainer/payments", element: <Payments  /> },
+      { path: "/trainer/account", element: <Account  /> },
+      { path: "/trainer/client-payment-information/:clientId", element: <PaymentStatus  /> },
+
+
+
+      
 
     ],
   },
   { path: "/login", element: <SignIn /> },
   { path: "/register", element: <SignUp /> },
 ];
-// const TrainerRoutes = [
-//   { 
-//     path: "/",
-//     element: <FullLayoutTrainer />,
-//     children: [
-//       { path: "/", element: <Navigate to="/trainer/all-users" /> },
-      
-//       { path: "/trainer/all-users", element: <AllUser /> },
-//       { path: "/trainer/assigned-users", element: <AssignedUsers /> },
-//       { path: "/trainer/assign-workout-plan", element: <AssignWorkoutPlan /> },
-//       {path:"/trainer/user-information/:clientId" , element:<UserDetails/>},
-
-//     ],
-//   },
-//   { path: "/login", element: <SignIn /> },
-//   { path: "/register", element: <SignUp /> },
-// ];
-
 export default TrainerRoutes;

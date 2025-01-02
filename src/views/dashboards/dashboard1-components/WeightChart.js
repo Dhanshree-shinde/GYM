@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import Chart from "react-apexcharts";
@@ -12,7 +10,6 @@ const WeightChart = () => {
 
   const clientId=localStorage.getItem('id');
 
-  // const weightData = [60, 62, 64, 67, 69, 70, 72, 74, 75, 76, 78, 80];
 
   const [weightData, setWeightData] = useState([]);
 
@@ -43,6 +40,17 @@ const WeightChart = () => {
       height: 295,
       toolbar: {
         show: false,
+      },
+      toolbar: {
+        show: true,
+        tools: {
+          reset: true, // Add reset zoom functionality
+        },
+      },
+      zoom: {
+        enabled: true, // Enable zoom functionality
+        type: "x", // Zoom along the x-axis
+        autoScaleYaxis: true, // Automatically adjust the y-axis on zoom
       },
       foreColor: "#adb0bb",
       fontFamily: "'DM Sans',sans-serif",
@@ -76,6 +84,9 @@ const WeightChart = () => {
       labels: {
         style: {
           cssClass: "grey--text lighten-2--text fill-color",
+        },
+        formatter: function (val) {
+          return val.toFixed(1); // Force exactly one decimal place
         },
       },
     },

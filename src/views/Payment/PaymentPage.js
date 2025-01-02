@@ -1,75 +1,51 @@
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
-// const PaymentPage = () => {
-//   const [paymentCycle, setPaymentCycle] = useState("monthly");
-//   const [dueDate, setDueDate] = useState("2024-12-31"); // Example due date
-//   const navigate = useNavigate();
-
-//   const handleCompletePayment = () => {
-//     navigate("/save-card-info");
-//   };
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <h1>Payment</h1>
-//       <div>
-//         <label>
-//           Payment Cycle:
-//           <select
-//             value={paymentCycle}
-//             onChange={(e) => setPaymentCycle(e.target.value)}
-//           >
-//             <option value="monthly">Monthly</option>
-//             <option value="annual">Annual</option>
-//           </select>
-//         </label>
-//       </div>
-//       <div>
-//         <label>
-//           Next Payment Due Date:
-//           <input
-//             type="date"
-//             value={dueDate}
-//             onChange={(e) => setDueDate(e.target.value)}
-//           />
-//         </label>
-//       </div>
-//       <button onClick={handleCompletePayment}>Complete Payment</button>
-//     </div>
-//   );
-// };
-
-// export default PaymentPage;
-
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 import {
   Card,
   CardContent,
   Typography,
   Box,
   FormControl,
-  MenuItem,
-  Select,
   Button,
-  TextField,
 } from "@mui/material";
 
 const PaymentPage = () => {
+  
+
+  const clientId = localStorage.getItem('id');
+
   const [paymentCycle, setPaymentCycle] = useState("monthly");
   const [dueDate, setDueDate] = useState("2024-12-31");
+  const[payment,setPayment]=useState([]);
   const navigate = useNavigate();
 
-  const handleCompletePayment = () => {
-    navigate("/client/save-card-info");
+  useEffect(()=>{
+    axios.get(`http://localhost:3001/get-payment-info/${clientId}`)
+    .then((response)=>{
+      setPayment(response.data);
+     
+    })
+    .catch((err)=>{
+        console.error(err);
+    })
+  },[clientId])
+
+  const handleCompletePayment = (paymentId,amount) => {
+    navigate(`/client/save-card-info/`,{ state: {paymentId, amount } });
   };
+  
 
   return (
-    <Card variant="outlined">
-      <CardContent>
-        <Box
+    <Card >
+      {payment.map((pay)=>(
+         <Card >
+
+   
+      <CardContent variant="outlined" key={pay.id} >
+        <Box 
           sx={{
             display: {
               sm: "flex",
@@ -92,41 +68,49 @@ const PaymentPage = () => {
         </Box>
         <Box sx={{ mt: 3 }}>
           <FormControl fullWidth variant="standard" sx={{ marginBottom: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Payment Cycle:
+          <Typography variant="h5" gutterBottom>
+            
+              Payment Amount :{pay.payment_amount}
+
             </Typography>
-            <Select
-              value={paymentCycle}
-              onChange={(e) => setPaymentCycle(e.target.value)}
-            >
-              <MenuItem value="monthly">Monthly</MenuItem>
-              <MenuItem value="annual">Annual</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth variant="standard" sx={{ marginBottom: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Next Payment Due Date:
+
+            <Typography variant="h5" gutterBottom>
+              Payment requested date :{pay.payment_requested_date}
+
             </Typography>
-            <TextField
-              type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+            
           </FormControl>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-          <Button
+          {
+            pay.payment_status==='Pending' ?
+          (<Button
             variant="contained"
             color="primary"
-            onClick={handleCompletePayment}
+            onClick={()=>{handleCompletePayment(pay.id,pay.payment_amount)}}
           >
             Complete Payment
-          </Button>
+          </Button>):(<Button
+            variant="contained"
+            color="primary"
+            disable="true"
+            sx={{
+              backgroundColor: "lightgray" ,
+              "&:hover": {
+                backgroundColor: 
+                  "lightgray"
+                 
+              },
+              transition: "background-color 0.3s",
+            }}
+          >
+             Payment completed
+          </Button> )
+          }
         </Box>
       </CardContent>
+      </Card>
+         ))}
     </Card>
   );
 };
