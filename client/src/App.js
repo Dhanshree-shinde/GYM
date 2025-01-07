@@ -1,41 +1,32 @@
 import React from "react";
-import { useRoutes, Navigate } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
-import { baseTheme } from './assets/global/Theme-variable'
+import { baseTheme } from './assets/global/Theme-variable';
 import Themeroutes from "./routes/Router";
 import TrainerRoutes from "./routes/RouterTrainer";
 import SignIn from "./components/Auth/SignIn";
+import SignUp from "./components/Auth/SignUp";
 
 const App = () => {
-    const clientRouting = useRoutes(Themeroutes);
+  const clientRouting = useRoutes(Themeroutes);
   const trainerRouting = useRoutes(TrainerRoutes);
 
   const role = localStorage.getItem('role');
 
+  // Decide based on role or pathname
   const routing = role
     ? role === 'trainer'
       ? trainerRouting
       : clientRouting
-    : <SignIn/>; // Redirect to login if no role
+    : window.location.pathname === '/register'
+    ? <SignUp />
+    : <SignIn />;
 
   return (
     <ThemeProvider theme={baseTheme}>
       {routing}
     </ThemeProvider>
   );
-  // const routing = useRoutes(Themeroutes);
-  // const trainerRouting = useRoutes(TrainerRoutes);
-  // const role = "client";
-
-  // const theme = baseTheme;
-  // return (
-  //   <ThemeProvider theme={theme}>
-
-  //     {role === "client" ? routing : trainerRouting}
-  //     {/* {trainerRouting} */}
-
-  //   </ThemeProvider>
-  // );
 };
 
 export default App;

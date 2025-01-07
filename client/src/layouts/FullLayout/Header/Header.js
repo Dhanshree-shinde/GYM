@@ -71,6 +71,8 @@ const Header = (props) => {
 
       // Remove JWT from localStorage
       localStorage.removeItem('token');
+      localStorage.removeItem('id');
+      localStorage.removeItem('role');
 
       // Redirect to the login page
       navigate('/login');
@@ -138,9 +140,9 @@ const Header = (props) => {
             },
           }}
         >
-          <MenuItem onClick={handleClose}>Action</MenuItem>
+          {/* <MenuItem onClick={handleClose}>Action</MenuItem>
           <MenuItem onClick={handleClose}>Action Else</MenuItem>
-          <MenuItem onClick={handleClose}>Another Action</MenuItem>
+          <MenuItem onClick={handleClose}>Another Action</MenuItem> */}
         </Menu>
         {/* ------------------------------------------- */}
         {/* End Notifications Dropdown */}

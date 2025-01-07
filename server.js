@@ -625,7 +625,6 @@ app.get("/get-notification/:userId", (req, res) => {
       console.error(err);
       res.status(500).json({ error: "Database query failed" });
     } else {
-      console.log(results)
       res.json(results);
     }
   });
@@ -746,7 +745,6 @@ app.get('/single-user-detail/:clientId', (req, res) => {
 app.get('/get-payment-info/:clientId', (req, res) => {
   const { clientId } = req.params;
 
-  console.log(clientId)
   const query = `SELECT * FROM payment WHERE client_id = ?`;
 
   db.query(query, [clientId], (err, results) => {
