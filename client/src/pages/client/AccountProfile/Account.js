@@ -1,12 +1,12 @@
 
 
 import React, { useState, useEffect } from 'react';
-import '../../css/Account.css';
+import '../../../css/Account.css';
 import axios from 'axios';
 import {
   TextField, Button,
 } from "@mui/material";
-const TrainerAccount = () => {
+const Account = () => {
   const clientId = localStorage.getItem('id');
   const [user, setUser] = useState({
     name: '',
@@ -14,9 +14,9 @@ const TrainerAccount = () => {
     height: '',
     weight: '',
     date_of_birth: '',
-    photo:"",
+    photo: "",
   });
-  const[file,setFile]=useState(null);
+  const [file, setFile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [trainer, setTrainer] = useState("");
@@ -91,32 +91,26 @@ const TrainerAccount = () => {
       setUser({ ...user, photo: selectedFile.name });
       setFile(selectedFile);  // Store the selected file
     }
-  };
+
+    if (!selectedFile) {
+      alert('No file selected!');
+      return;
+    }
 
 
-
-  // Trigger the hidden file input
-  const handleUploadClick = () => {
-    document.getElementById('fileInput').click();
-  if (!file) {
-    alert('No file selected!');
-    return;
-  }
-
-    
     const formData = new FormData();
-    formData.append('photo', file); // Ensure the key matches 'photo'
+    formData.append('photo', selectedFile); // Ensure the key matches 'photo'
     formData.append('clientId', clientId); // Add clientId as part of the form data
-  
-    // axios
-      // .post('http://localhost:3001/upload-photo', formData, {
-      //   headers: { 'Content-Type': 'multipart/form-data' }, // Optional, Axios sets this automatically
-      // })
 
-      fetch("http://localhost:3001/upload-photo", {
-        method: "POST",
-        body: formData, // Form data instead of JSON
-      })
+    // axios
+    // .post('http://localhost:3001/upload-photo', formData, {
+    //   headers: { 'Content-Type': 'multipart/form-data' }, // Optional, Axios sets this automatically
+    // })
+
+    fetch("http://localhost:3001/upload-photo", {
+      method: "POST",
+      body: formData, // Form data instead of JSON
+    })
       .then((response) => {
         if (response.ok) {
           return response.json(); // Assuming the server sends the uploaded photo's URL or file name in the response
@@ -131,12 +125,22 @@ const TrainerAccount = () => {
         });
         alert('Photo uploaded!');
       })
-      
+
       .catch((error) => {
         console.error('Error uploading photo:', error);
       });
   };
-  
+
+
+
+
+
+  // Trigger the hidden file input
+  const handleUploadClick = () => {
+    document.getElementById('fileInput').click();
+
+  };
+
   console.log(user);
 
   if (!user.email)
@@ -144,6 +148,7 @@ const TrainerAccount = () => {
 
 
   return (
+
 
     <div className="account-container">
       <h1 className="account-header">Account</h1>
@@ -156,7 +161,9 @@ const TrainerAccount = () => {
             className="profile-picture"
           />
 
-          
+
+
+
           <h2 className="profile-name">{user.name}</h2>
           {/* Hidden file input */}
           <input
@@ -167,7 +174,18 @@ const TrainerAccount = () => {
           />
 
           {/* Button to trigger the file input click */}
-          <button className="upload-button" onClick={handleUploadClick}>
+          <button className="upload-button" onClick={handleUploadClick}sx={{
+                        color: "white",
+                        borderRadius: "20px",
+                        padding: "8px 20px",
+                        fontWeight: "bold",
+                        fontSize: "0.9rem",
+                        transition: "transform 0.3s, box-shadow 0.3s",
+                        "&:hover": {
+                          transform: "scale(1.05)",
+                         
+                        },
+                      }}>
             Upload Picture
           </button>
         </div>
@@ -272,8 +290,43 @@ const TrainerAccount = () => {
               </div>
 
             </div>
-            
+            <div className="form-row">
+              {
+                trainer ? (
+                  <>
+                    <div className="form-group">
+                      <span > Trainer Name : {trainer.name}</span>
+                    </div>
+                    <div className="form-group">
+                      <Button
+                        type="button"
+                        onClick={removeTrainer}
+                      >
+                        Remove Trainer
+                      </Button>
+                    </div>
+
+                  </>) : (<div className="form-group">
+                    <span > No trainer Assigned </span>
+                  </div>)
+              }
+            </div>
             <Button
+
+              sx={{
+                background: "linear-gradient(90deg, #2196f3, #21cbf3)",
+                color: "white",
+                borderRadius: "20px",
+                padding: "8px 20px",
+                fontWeight: "bold",
+                fontSize: "0.9rem",
+                transition: "transform 0.3s, box-shadow 0.3s",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  boxShadow: "0px 0px 10px #21cbf3",
+                  background: "linear-gradient(90deg, #1976d2, #2196f3)",
+                },
+              }}
               type="button"
               color="primary"
               onClick={isEditing ? handleSave : () => setIsEditing(true)}
@@ -286,7 +339,9 @@ const TrainerAccount = () => {
         </div>
       </div>
     </div>
+
+
   );
 };
 
-export default  TrainerAccount ;
+export default Account;

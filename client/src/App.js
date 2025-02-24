@@ -4,8 +4,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import { baseTheme } from './assets/global/Theme-variable';
 import Themeroutes from "./routes/Router";
 import TrainerRoutes from "./routes/RouterTrainer";
-import SignIn from "./components/Auth/SignIn";
-import SignUp from "./components/Auth/SignUp";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
 const App = () => {
   const clientRouting = useRoutes(Themeroutes);

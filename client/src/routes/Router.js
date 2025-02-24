@@ -2,7 +2,7 @@ import React from "react";
 import {  Navigate } from "react-router-dom"; // Ensure Navigate is imported
 import PrivateRoute from './PrivateRoute';
 import { lazy } from 'react';
-import AddClientData from "../views/Trainer/AddClientData.js";
+import AddClientData from "../pages/trainer/AssignedClients/AddClientData.js";
 
 // Rest of the code...
 
@@ -11,27 +11,21 @@ const FullLayout = lazy(() => import("../layouts/FullLayout/FullLayout.js"));
 /****End Layouts*****/
 
 /*****Pages******/
-const Dashboard1 = lazy(() => import("../views/dashboards/Dashboard1.js"));
+const Dashboard1 = lazy(() => import("../pages/client/dashboards/Dashboard1.js"));
 
-const ExAccount = lazy(() => import("../views/Accounts/Account.js"));
+const ExAccount = lazy(() => import("../pages/client/AccountProfile/Account.js"));
 
-const WorkoutPlan = lazy(() => import("../views/WorkoutPlan/WorkoutPlan.js"));
+const WorkoutPlan = lazy(() => import("../pages/client/WorkoutPlan/WorkoutPlan.js"));
 
-const PaymentPage = lazy(() => import("../views/Payment/PaymentPage.js"));
+const PaymentPage = lazy(() => import("../pages/client/Payment/PaymentPage.js"));
 
-const SaveCardInfoPage = lazy(() => import("../views/Payment/SaveCardInfoPage.js"));
-const Notification = lazy(() => import("../views/Notification/Notification.js"));
+const SaveCardInfoPage = lazy(() => import("../pages/client/Payment/SaveCardInfoPage.js"));
+const Notification = lazy(() => import("../pages/client/Notification/Notification.js"));
+const SignUp = lazy(() => import("../pages/SignUp.js"));
 
-
-
-// const SignIn = lazy(() => import("../components/Auth/SignIn.js"));
-const SignUp = lazy(() => import("../components/Auth/SignUp.js"));
-
-const SignIn = lazy(() => import("../components/Auth/SignIn.js"));
+const SignIn = lazy(() => import("../pages/SignIn.js"));
 
 
-
-/*****Routes******/
 
 
 const ThemeRoutes = [

@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { keyframes } from "@emotion/react";
 import axios from "axios";
 import {
   Card,
@@ -12,6 +13,16 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 const PaymentStatus = () => {
   
 
@@ -35,7 +46,8 @@ const PaymentStatus = () => {
 
   return (
     <Card >
-         <Box>
+         <Box 
+            >
             <Typography
               variant="h3"
               sx={{
@@ -63,7 +75,13 @@ const PaymentStatus = () => {
          
         </Box>
         <Box sx={{ mt: 3 }}>
-          <FormControl fullWidth variant="standard" sx={{ marginBottom: 3 }}>
+          <FormControl fullWidth variant="standard" sx={{ marginBottom: 3 ,
+                                animation: `${fadeIn} 0.5s ease-in-out`,
+                                transition: "background-color 0.3s",
+                                "&:hover": {
+                                    backgroundColor: "#e0f7fa",
+                                },
+                            }}>
           <Typography variant="h5" gutterBottom>
             
               Payment Amount :{pay.payment_amount}

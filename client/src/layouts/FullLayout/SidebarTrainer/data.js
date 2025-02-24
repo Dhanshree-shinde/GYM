@@ -33,11 +33,6 @@ const Menuitems = [
   },
 
  
-  // {
-  //   title: "User Details",
-  //   icon: DashboardOutlinedIcon,
-  //   href: "/trainer/user-information/:clientId",
-  // },
  
 ];
 

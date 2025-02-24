@@ -10,22 +10,21 @@ const FullLayoutTrainer = lazy(() => import("../layouts/FullLayout/FullLayoutTra
 /****End Layouts*****/
 
 /*****Pages******/
-const AllUser = lazy(() => import("../views/Trainer/AllUser.js"));
-const AssignedUsers=lazy(() => import("../views/Trainer/Clients.js"));
-// const SignIn = lazy(() => import("../components/Auth/SignIn.js"));
-const SignUp = lazy(() => import("../components/Auth/SignUp.js"));
+const AllUser = lazy(() => import("../pages/trainer/AllUsers/AllUser.js"));
+const AssignedUsers=lazy(() => import("../pages/trainer/AssignedClients/Clients.js"));
+const SignUp = lazy(() => import("../pages/SignUp.js"));
 
-const SignIn = lazy(() => import("../components/Auth/SignIn.js"));
-const AssignWorkoutPlan=lazy(() => import("../views/Trainer/AssignWorkoutPlan.js"));
+const SignIn = lazy(() => import("../pages/SignIn.js"));
+const AssignWorkoutPlan=lazy(() => import("../pages/trainer/AssignedClients/AssignWorkoutPlan.js"));
 
 // form layouts
-const UserDetails = lazy(() => import("../views/Trainer/UserDetailPage.js"));
-const AddClientData = lazy(() => import("../views/Trainer/AddClientData.js"));
-const Payments = lazy(() => import("../views/Trainer/Payments.js"));
-const PaymentStatus = lazy(() => import("../views/Trainer/PaymentStatus.js"));
+const UserDetails = lazy(() => import("../pages/trainer/AssignedClients/UserDetailPage.js"));
+const AddClientData = lazy(() => import("../pages/trainer/AssignedClients/AddClientData.js"));
+const Payments = lazy(() => import("../pages/trainer/Payment/Payments.js"));
+const PaymentStatus = lazy(() => import("../pages/trainer/Payment/PaymentStatus.js"));
 
 
-const Account = lazy(() => import("../views/Trainer/TrainerAccount.js"));
+const Account = lazy(() => import("../pages/trainer/AccountProfile/TrainerAccount.js"));
 
 /*****Routes******/
 
