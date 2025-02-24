@@ -1,7 +1,124 @@
 
-import React, { useState } from "react";
+// import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { useEffect } from "react";
+// import axios from "axios";
+// import {
+//   Card,
+//   CardContent,
+//   Typography,
+//   Box,
+//   FormControl,
+//   Button,
+// } from "@mui/material";
+
+// const PaymentPage = () => {
+  
+
+//   const clientId = localStorage.getItem('id');
+
+//   const [paymentCycle, setPaymentCycle] = useState("monthly");
+//   const [dueDate, setDueDate] = useState("2024-12-31");
+//   const[payment,setPayment]=useState([]);
+//   const navigate = useNavigate();
+
+//   useEffect(()=>{
+//     axios.get(`http://localhost:3001/get-payment-info/${clientId}`)
+//     .then((response)=>{
+//       setPayment(response.data);
+     
+//     })
+//     .catch((err)=>{
+//         console.error(err);
+//     })
+//   },[clientId])
+
+//   const handleCompletePayment = (paymentId,amount) => {
+//     navigate(`/client/save-card-info/`,{ state: {paymentId, amount } });
+//   };
+  
+
+//   return (
+//     <Card >
+//       {payment.map((pay)=>(
+//          <Card >
+
+   
+//       <CardContent variant="outlined" key={pay.id} >
+//         <Box 
+//           sx={{
+//             display: {
+//               sm: "flex",
+//               xs: "block",
+//             },
+//             alignItems: "flex-start",
+//           }}
+//         >
+//           <Box>
+//             <Typography
+//               variant="h3"
+//               sx={{
+//                 marginBottom: "0",
+//               }}
+//               gutterBottom
+//             >
+//               Payment
+//             </Typography>
+//           </Box>
+//         </Box>
+//         <Box sx={{ mt: 3 }}>
+//           <FormControl fullWidth variant="standard" sx={{ marginBottom: 3 }}>
+//           <Typography variant="h5" gutterBottom>
+            
+//               Payment Amount :{pay.payment_amount}
+
+//             </Typography>
+
+//             <Typography variant="h5" gutterBottom>
+//               Payment requested date :{pay.payment_requested_date}
+
+//             </Typography>
+            
+//           </FormControl>
+//         </Box>
+//         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+//           {
+//             pay.payment_status==='Pending' ?
+//           (<Button
+//             variant="contained"
+//             color="primary"
+//             onClick={()=>{handleCompletePayment(pay.id,pay.payment_amount)}}
+//           >
+//             Complete Payment
+//           </Button>):(<Button
+//             variant="contained"
+//             color="primary"
+//             disable="true"
+//             sx={{
+//               backgroundColor: "lightgray" ,
+//               "&:hover": {
+//                 backgroundColor: 
+//                   "lightgray"
+                 
+//               },
+//               transition: "background-color 0.3s",
+//             }}
+//           >
+//              Payment completed
+//           </Button> )
+//           }
+//         </Box>
+//       </CardContent>
+//       </Card>
+//          ))}
+//     </Card>
+//   );
+// };
+
+// export default PaymentPage;
+
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import axios from "axios";
 import {
   Card,
@@ -10,108 +127,129 @@ import {
   Box,
   FormControl,
   Button,
+  CircularProgress,
 } from "@mui/material";
+import { keyframes } from "@emotion/react";
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const PaymentPage = () => {
-  
-
-  const clientId = localStorage.getItem('id');
-
-  const [paymentCycle, setPaymentCycle] = useState("monthly");
-  const [dueDate, setDueDate] = useState("2024-12-31");
-  const[payment,setPayment]=useState([]);
+  const clientId = localStorage.getItem("id");
+  const [payment, setPayment] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    axios.get(`http://localhost:3001/get-payment-info/${clientId}`)
-    .then((response)=>{
-      setPayment(response.data);
-     
-    })
-    .catch((err)=>{
-        console.error(err);
-    })
-  },[clientId])
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+      console.warn("Loading timed out after 60 seconds");
+    }, 60000);
 
-  const handleCompletePayment = (paymentId,amount) => {
-    navigate(`/client/save-card-info/`,{ state: {paymentId, amount } });
+    axios
+      .get(`http://localhost:3001/get-payment-info/${clientId}`)
+      .then((response) => {
+        setPayment(response.data);
+        setLoading(false);
+        clearTimeout(timeoutId);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+        clearTimeout(timeoutId);
+      });
+
+    return () => clearTimeout(timeoutId);
+  }, [clientId]);
+
+  const handleCompletePayment = (paymentId, amount) => {
+    navigate(`/client/save-card-info/`, { state: { paymentId, amount } });
   };
-  
 
   return (
-    <Card >
-      {payment.map((pay)=>(
-         <Card >
-
-   
-      <CardContent variant="outlined" key={pay.id} >
-        <Box 
+    <Box>
+      {loading ? (
+        <Box
           sx={{
-            display: {
-              sm: "flex",
-              xs: "block",
-            },
-            alignItems: "flex-start",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
           }}
         >
-          <Box>
-            <Typography
-              variant="h3"
+          <CircularProgress size={80} thickness={4} />
+        </Box>
+      ) : (
+        <Box>
+          <Typography variant="h3" sx={{ mb: 3 }}>
+            Payments
+          </Typography>
+          {payment.map((pay) => (
+            <Card
+              key={pay.id}
               sx={{
-                marginBottom: "0",
+                animation: `${fadeIn} 0.5s ease-in-out`,
+                backgroundColor: pay.payment_status === "Completed" ? "#f0f0f0" : "#ffffff",
+                transition: "background-color 0.3s",
+                "&:hover": {
+                  backgroundColor: "#e0f7fa",
+                },
+                mb: 3,
               }}
-              gutterBottom
             >
-              Payment
-            </Typography>
-          </Box>
+              <CardContent>
+                <Typography variant="h5">Payment Amount: {pay.payment_amount}</Typography>
+                <Typography variant="h6">Requested Date: {pay.payment_requested_date}</Typography>
+                <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+                  {pay.payment_status === "Pending" ? (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        background: "linear-gradient(90deg, #2196f3, #21cbf3)",
+                        color: "white",
+                        borderRadius: "20px",
+                        padding: "8px 20px",
+                        fontWeight: "bold",
+                        fontSize: "0.9rem",
+                        transition: "transform 0.3s, box-shadow 0.3s",
+                        "&:hover": {
+                          transform: "scale(1.05)",
+                          boxShadow: "0px 0px 10px #21cbf3",
+                          background: "linear-gradient(90deg, #1976d2, #2196f3)",
+                        },
+                      }}
+                      onClick={() => handleCompletePayment(pay.id, pay.payment_amount)}
+                    >
+                      Complete Payment
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      disabled
+                      sx={{
+                        background: "linear-gradient(90deg, #d3d3d3, #e6e6e6)",
+                        color: "#a3a3a3",
+                        cursor: "not-allowed",
+                      }}
+                    >
+                      Payment Completed
+                    </Button>
+                  )}
+                </Box>
+              </CardContent>
+            </Card>
+          ))}
         </Box>
-        <Box sx={{ mt: 3 }}>
-          <FormControl fullWidth variant="standard" sx={{ marginBottom: 3 }}>
-          <Typography variant="h5" gutterBottom>
-            
-              Payment Amount :{pay.payment_amount}
-
-            </Typography>
-
-            <Typography variant="h5" gutterBottom>
-              Payment requested date :{pay.payment_requested_date}
-
-            </Typography>
-            
-          </FormControl>
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-          {
-            pay.payment_status==='Pending' ?
-          (<Button
-            variant="contained"
-            color="primary"
-            onClick={()=>{handleCompletePayment(pay.id,pay.payment_amount)}}
-          >
-            Complete Payment
-          </Button>):(<Button
-            variant="contained"
-            color="primary"
-            disable="true"
-            sx={{
-              backgroundColor: "lightgray" ,
-              "&:hover": {
-                backgroundColor: 
-                  "lightgray"
-                 
-              },
-              transition: "background-color 0.3s",
-            }}
-          >
-             Payment completed
-          </Button> )
-          }
-        </Box>
-      </CardContent>
-      </Card>
-         ))}
-    </Card>
+      )}
+    </Box>
   );
 };
 

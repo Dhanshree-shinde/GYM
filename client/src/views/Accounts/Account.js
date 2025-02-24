@@ -273,6 +273,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../css/Account.css';
 import axios from 'axios';
+import { motion } from "framer-motion";
 import {
   TextField, Button,
 } from "@mui/material";
@@ -284,9 +285,9 @@ const Account = () => {
     height: '',
     weight: '',
     date_of_birth: '',
-    photo:"",
+    photo: "",
   });
-  const[file,setFile]=useState(null);
+  const [file, setFile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [trainer, setTrainer] = useState("");
@@ -361,32 +362,26 @@ const Account = () => {
       setUser({ ...user, photo: selectedFile.name });
       setFile(selectedFile);  // Store the selected file
     }
-  };
+
+    if (!selectedFile) {
+      alert('No file selected!');
+      return;
+    }
 
 
-
-  // Trigger the hidden file input
-  const handleUploadClick = () => {
-    document.getElementById('fileInput').click();
-  if (!file) {
-    alert('No file selected!');
-    return;
-  }
-
-    
     const formData = new FormData();
-    formData.append('photo', file); // Ensure the key matches 'photo'
+    formData.append('photo', selectedFile); // Ensure the key matches 'photo'
     formData.append('clientId', clientId); // Add clientId as part of the form data
-  
-    // axios
-      // .post('http://localhost:3001/upload-photo', formData, {
-      //   headers: { 'Content-Type': 'multipart/form-data' }, // Optional, Axios sets this automatically
-      // })
 
-      fetch("http://localhost:3001/upload-photo", {
-        method: "POST",
-        body: formData, // Form data instead of JSON
-      })
+    // axios
+    // .post('http://localhost:3001/upload-photo', formData, {
+    //   headers: { 'Content-Type': 'multipart/form-data' }, // Optional, Axios sets this automatically
+    // })
+
+    fetch("http://localhost:3001/upload-photo", {
+      method: "POST",
+      body: formData, // Form data instead of JSON
+    })
       .then((response) => {
         if (response.ok) {
           return response.json(); // Assuming the server sends the uploaded photo's URL or file name in the response
@@ -401,12 +396,22 @@ const Account = () => {
         });
         alert('Photo uploaded!');
       })
-      
+
       .catch((error) => {
         console.error('Error uploading photo:', error);
       });
   };
-  
+
+
+
+
+
+  // Trigger the hidden file input
+  const handleUploadClick = () => {
+    document.getElementById('fileInput').click();
+    
+  };
+
   console.log(user);
 
   if (!user.email)
@@ -414,19 +419,36 @@ const Account = () => {
 
 
   return (
+    // <motion.div
+    //   className="account-container"
+    //   initial={{ opacity: 0 }}
+    //   animate={{ opacity: 1 }}
+    //   transition={{ duration: 0.8 }}
+    // >
 
-    <div className="account-container">
+      <div className="account-container">
       <h1 className="account-header">Account</h1>
       <div className="account-content">
         {/* Profile Card */}
         <div className="profile-card">
           <img
+              src={`http://localhost:3001/images/${user.photo_url}`}
+              alt="Profile"
+              className="profile-picture"
+            />
+
+          {/* <img
             src={`http://localhost:3001/images/${user.photo_url}`}
             alt="Profile"
             className="profile-picture"
-          />
+            style={{
+              transition: "transform 0.3s ease-in-out",
+              transform: loading ? "scale(1.5) rotate(360deg)" : "scale(1)",
+            }}
+          /> */}
 
-          
+
+
           <h2 className="profile-name">{user.name}</h2>
           {/* Hidden file input */}
           <input
@@ -545,18 +567,18 @@ const Account = () => {
             <div className="form-row">
               {
                 trainer ? (
-                <>
-                  <div className="form-group">
+                  <>
+                    <div className="form-group">
                       <span > Trainer Name : {trainer.name}</span>
-                  </div>
-                  <div className="form-group">
+                    </div>
+                    <div className="form-group">
                       <Button
                         type="button"
                         onClick={removeTrainer}
                       >
-                      Remove Trainer
-                    </Button>
-                  </div>
+                        Remove Trainer
+                      </Button>
+                    </div>
 
                   </>) : (<div className="form-group">
                     <span > No trainer Assigned </span>
@@ -575,7 +597,9 @@ const Account = () => {
           </form>
         </div>
       </div>
-    </div>
+      </div>
+    
+
   );
 };
 
