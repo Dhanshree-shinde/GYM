@@ -20,10 +20,11 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 // Database connection
 const db = mysql.createConnection({
+  multipleStatements:true, // make false to actyivate sql injection (default- false)
   host: 'localhost',
   user: 'root',
-  password: 'root123', // Replace with your MySQL password
-  database: 'gym'
+  password: '', // Replace with your MySQL password
+  database: 'gym_database1'
 });
 
 db.connect(err => {
@@ -132,175 +133,6 @@ const upload = multer({
   storage: storage
 })
 
-//using object ip blocking
-// const registrationRateLimiter = {}; // Memory store for tracking registration attempts
-
-
-// // Route: Register user
-// app.post('/register', upload.single('photo'), async (req, res) => {
-//   const clientIp = req.ip; // Get client IP address
-
-
-//   const {
-//     name,
-//     phone,
-//     email,
-//     password,
-//     weight,
-//     height,
-//     dateOfBirth,
-//     gender,
-//     role
-//   } = req.body;
-
-//   const photo = req.file.filename; // This is the correct reference for the uploaded file
-//   if (!registrationRateLimiter[clientIp]) {
-//     registrationRateLimiter[clientIp] = { attempts: 0, blockedUntil: null };
-//   }
-
-//   const clientData = registrationRateLimiter[clientIp];
-
-//   // Check if IP is blocked and reset if necessary
-//   if (isIPBlocked(clientIp, clientData)) {
-//     const waitTime = Math.ceil((clientData.blockedUntil - new Date()) / 60000);
-//     return res.status(429).json({ message: `IP blocked. Try again in ${waitTime} minutes.` });
-//   }
-
-
-
-//   // Validate required fields
-//   if (!name || !email || !password || !phone) {
-
-//     return res.status(400).json({ message: 'Missing required fields' });
-//   }
-
-//   // Hash password
-//   const hashedPassword = await bcrypt.hash(password, 10);
-
-//   const query = `INSERT INTO user (name, phone_number, email, password, weight, height, photo_url, date_of_birth, gender, role)
-//                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-//   db.query(
-//     query,
-//     [name, phone, email, hashedPassword, weight, height, photo, dateOfBirth, gender, role],
-//     (err, result) => {
-//       if (err) {
-//         if (err.code === 'ER_DUP_ENTRY') {
-//           return res.status(400).json({ message: 'Email already exists' });
-//         }
-//         console.error(err);
-//         return res.status(500).json({ message: 'Database error' });
-//       }
-
-//       clientData.attempts += 1;
-//         checkAndBlock(clientIp, clientData);
-//       res.status(201).json({ message: 'User registered successfully' });
-//     }
-//   );
-// });
-
-// function checkAndBlock(ip, data) {
-//   const currentTime = new Date();
-
-//   if (data.attempts >= 5) {
-//     data.blockedUntil = new Date(currentTime.getTime() + 24 * 60 * 60 * 1000); // Block for 24 hours
-//   }
-// }
-
-// // Reset attempts after block expiration
-// function isIPBlocked(ip, data) {
-//   const currentTime = new Date();
-
-//   if (data.blockedUntil && data.blockedUntil <= currentTime) {
-//     // Reset the attempt count and unblocking status after 24 hours
-//     data.attempts = 0;
-//     data.blockedUntil = null;
-//   }
-
-//   return data.blockedUntil && data.blockedUntil > currentTime;
-// }
-
-
-
-// const loginRateLimiter = {}; // Memory store for tracking login attempts
-
-// app.post('/login', (req, res) => {
-//   const clientIp = req.ip; // Get client IP address
-//   const { email, password } = req.body;
-
-//   if (!loginRateLimiter[clientIp]) {
-//     loginRateLimiter[clientIp] = { attempts: 0, blockedUntil: null };
-//   }
-
-//   const clientData = loginRateLimiter[clientIp];
-
-//   // Check if IP is blocked and reset if necessary
-//   if (isIPBlocked(clientIp, clientData)) {
-//     const waitTime = Math.ceil((clientData.blockedUntil - new Date()) / 60000);
-//     return res.status(429).json({ message: `IP blocked. Try again in ${waitTime} minutes.` });
-//   }
-
-
-//   const query = `SELECT * FROM user WHERE email = ?`;
-
-//   db.query(query, [email], async (err, results) => {
-//     if (err) {
-//       console.error(err);
-//       return res.status(500).json({ message: 'Database error' });
-//     }
-
-//     if (results.length === 0) {
-//       clientData.attempts += 1;
-//       checkAndBlockLogin(clientIp, clientData);
-//       return res.status(401).json({ message: 'Invalid email or password' });
-//     }
-
-//     const user = results[0];
-//     const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-//     if (!isPasswordMatch) {
-//       clientData.attempts += 1;
-
-
-//       checkAndBlockLogin(clientIp, clientData);
-//       return res.status(401).json({ message: 'Invalid email or password' });
-//     }
-
-//     // Reset attempts on successful login
-//     clientData.attempts = 0;
-//     clientData.blockedUntil = null;
-
-//     const token = jwt.sign(
-//       { id: user.id, role: user.role },
-//       process.env.JWT_SECRET,
-//       { expiresIn: '1h' }
-//     );
-
-//     res.json({ message: 'Login successful', token, id: user.id, role: user.role });
-//   });
-// });
-
-// // Helper function to handle blocking logic based on login attempts
-// function checkAndBlockLogin(ip, data) {
-//   const currentTime = new Date();
-
-//   // Block for 48 hours after 20 attempts
-//   if (data.attempts >= 20) {
-//     data.blockedUntil = new Date(currentTime.getTime() + 48 * 60 * 60 * 1000); // Block for 48 hours
-//   }
-//   // Block for 2 hours after 10 attempts
-//   else if (data.attempts >= 10) {
-//     data.blockedUntil = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000); // Block for 2 hours
-//   }
-//   // Block for 15 minutes after 5 attempts
-//   else if (data.attempts >= 5) {
-//     data.blockedUntil = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000); // Block for 2 hours
-//   }
-//   // Block for 15 minutes after 3 attempts
-//   else if (data.attempts >= 3) {
-//     data.blockedUntil = new Date(currentTime.getTime() + 15 * 60 * 1000); // Block for 15 minutes
-//   }
-// }
 
 // Helper function to check IP block status for account creation
 const isIPBlockedForRegistration = async (ipAddress) => {
@@ -429,8 +261,8 @@ app.post('/login', async (req, res) => {
       });
     }
 
-    const query = `SELECT * FROM user WHERE email = ?`;
-    const [results] = await db.promise().query(query, [email]);
+    const query = `SELECT * FROM user WHERE email = '${email}'`; //allows sql injection  ${email}
+    const [results] = await db.promise().query(query);
 
     if (results.length === 0) {
       // Log failed attempt
