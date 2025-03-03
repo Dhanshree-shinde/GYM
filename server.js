@@ -12,6 +12,14 @@ const PORT = 3001;
 const multer = require('multer');
 const path = require('path')
 
+// rate limiter
+const limiter = require('express-rate-limit');
+const rateLimit = limiter({
+  windowMs: 10000,
+  max: 5,
+  message: 'Too many requests from this IP, please try again after 15 minutes'
+});
+app.use(rateLimit);
 
 
 // Middleware
@@ -23,8 +31,8 @@ const db = mysql.createConnection({
   multipleStatements:true, // make false to actyivate sql injection (default- false)
   host: 'localhost',
   user: 'root',
-  password: '', // Replace with your MySQL password
-  database: 'gym_database1'
+  password: 'Password@123', // Replace with your MySQL password
+  database: 'gym_database'
 });
 
 db.connect(err => {
