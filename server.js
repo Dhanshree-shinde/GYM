@@ -31,8 +31,8 @@ const db = mysql.createConnection({
   multipleStatements:true, // make false to actyivate sql injection (default- false)
   host: 'localhost',
   user: 'root',
-  password: 'Password@123', // Replace with your MySQL password
-  database: 'gym_database'
+  password: '', // Replace with your MySQL password
+  database: 'gym_database1'
 });
 
 db.connect(err => {
