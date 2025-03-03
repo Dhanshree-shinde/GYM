@@ -115,7 +115,7 @@ const Header = (props) => {
         {/* ------------------------------------------- */}
         {/* Notifications Dropdown */}
         {/* ------------------------------------------- */}
-        <IconButton
+        {/* <IconButton
           aria-label="menu"
           color="inherit"
           aria-controls="notification-menu"
@@ -123,7 +123,7 @@ const Header = (props) => {
           onClick={handleClick}
         >
           <NotificationsNoneOutlinedIcon width="20" height="20" />
-        </IconButton>
+        </IconButton> */}
         <Menu
           id="notification-menu"
           anchorEl={anchorEl}
